@@ -22,6 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+
 #ifndef OCTET_INCLUDED
 #define OCTET_INCLUDED
 
@@ -82,7 +83,12 @@
     /// System utilities and hardware
     namespace platform {}
 
-    using namespace containers;
+	/// Chuck:
+	/// Bricko physics 
+	namespace brickophysics {}
+
+
+	using namespace containers;
     using namespace resources;
     using namespace scene;
     using namespace math;
@@ -91,6 +97,7 @@
     using namespace shaders;
     using namespace physics;
     using namespace platform;
+	using namespace brickophysics;
   }
 
   // defines and configuration
@@ -129,6 +136,11 @@
     #pragma warning(disable : 4267)
     #include "../open_source/bullet/bullet.h"
   #endif
+
+#ifdef BRICKO
+	#pragma warning(disable : 4267)
+	#include "physics/bworld.h"
+#endif
 
   // scene
   #include "scene/scene.h"
