@@ -1,3 +1,6 @@
+#ifndef MAT3_INCLUDED
+#define MAT3_INCLUDED
+
 namespace octet { namespace math {
 
 	class mat3{
@@ -41,6 +44,11 @@ namespace octet { namespace math {
 			z[1] = h;
 			z[2] = i;
 		}
+
+		///This is used when setting a rotational matrix
+
+
 	};
 
 } }
+#endif
