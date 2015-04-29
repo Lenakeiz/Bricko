@@ -9,13 +9,21 @@
 
 namespace octet { namespace brickophysics {
 
+	enum BodyType{
+		Static,
+		Dynamic
+	};
+		
 		class brBody
 		{
 
+
 		private:
-			dynarray<int> listona;
+			
+		protected:
 
 		public:
+
 			brBody()
 			{
 			}

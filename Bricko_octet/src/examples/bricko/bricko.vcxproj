@@ -115,6 +115,7 @@
     <ClInclude Include="..\..\math\half_space.h" />
     <ClInclude Include="..\..\math\ivec3.h" />
     <ClInclude Include="..\..\math\ivec4.h" />
+    <ClInclude Include="..\..\math\mat3.h" />
     <ClInclude Include="..\..\math\mat4t.h" />
     <ClInclude Include="..\..\math\math.h" />
     <ClInclude Include="..\..\math\obb.h" />

@@ -45,6 +45,9 @@ namespace octet {
     OCTET_HUNGARIANS(ivec4)
     OCTET_HUNGARIANS(quat)
     OCTET_HUNGARIANS(mat4t)
+	//Chuck:
+	OCTET_HUNGARIANS(mat3)
+
     OCTET_HUNGARIANS(bvec2)
     OCTET_HUNGARIANS(bvec3)
     OCTET_HUNGARIANS(bvec4)
@@ -72,6 +75,7 @@ namespace octet {
 #include "ivec4.h"
 #include "quat.h"
 #include "mat4t.h"
+#include "mat3.h"
 #include "bvec2.h"
 #include "bvec3.h"
 #include "bvec4.h"

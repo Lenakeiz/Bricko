@@ -440,6 +440,9 @@
     <ClInclude Include="..\..\physics\bworld.h">
       <Filter>physics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\math\mat3.h">
+      <Filter>math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\resources\mesh_builder.inl">
