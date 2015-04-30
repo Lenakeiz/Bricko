@@ -11,6 +11,9 @@ namespace octet { namespace math {
   class quat : public vec4
   {
   public:
+	//Chuck
+	//Added default constructor for quaternion
+	  quat() : vec4(0, 0, 0, 0) {}
     quat(float x, float y, float z, float w) : vec4(x, y, z, w) {}
     quat(const vec4 &r) { *(vec4*)this = r; }
     quat operator*(const quat &r) const { return quat(qmul(r)); }

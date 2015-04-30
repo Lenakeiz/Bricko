@@ -68,5 +68,39 @@ namespace octet { namespace brickophysics {
 			{
 			}
 		};
+
+		//
+		// This struct will hold the definition of the single body (took inspiration from Randy Gaul approach)
+		//
+		//
+		struct brBodyDef
+		{
+			vec3 initialAxis;
+			float initialAngle;
+			vec3 initialPosition;
+			vec3 intialLinearVelocity;
+			vec3 intialAngularVelocity;
+
+			BodyType bodyType;
+
+			bool canSleep;
+			bool isAwake;
+
+			brBodyDef()
+			{
+				identity(initialAxis);
+				identity(initialPosition);
+				identity(intialLinearVelocity);
+				identity(intialAngularVelocity);
+				initialAngle = 0.0f;
+				
+				// Common default values
+				bodyType = BodyType::Static;
+				canSleep = true;
+				isAwake = true;
+			}
+		};
+
+
 } }
 #endif

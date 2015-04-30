@@ -349,6 +349,12 @@ namespace octet { namespace math {
      return lhs.dot(rhs); 
   }
 
+  // initialization
+  inline void identity(vec3& v)
+  {
+	  v.x() = 0.0f; v.y() = 0.0f; v.z() = 0.0f;
+  }
+
   // cross product
   inline vec3 cross(const vec3 &lhs, const vec3 &rhs) {
      return lhs.cross(rhs); 
