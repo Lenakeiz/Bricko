@@ -15,11 +15,8 @@ namespace octet { namespace brickophysics {
 	{
 
 	private:
-		dynarray<int> listona;
-
-	public:
-
 		
+	public:		
 
 		bworld()
 		{
