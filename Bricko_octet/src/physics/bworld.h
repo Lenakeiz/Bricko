@@ -18,6 +18,11 @@ namespace octet { namespace brickophysics {
 		
 	public:		
 
+		brBody* addBody()
+		{
+			
+		}
+
 		bworld()
 		{
 		}
