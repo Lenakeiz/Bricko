@@ -51,7 +51,7 @@ namespace octet {
 		{
 		private:
 
-			friend class bworld;
+			friend class brWorld;
 
 			enum
 			{
@@ -60,40 +60,7 @@ namespace octet {
 				CanSleep = 0x004,
 				IsAwake = 0x010,
 			};
-
-			brBody(const brBodyDef& def, bworld* world)
-			{
-				this->linearVelocity = def.intialLinearVelocity;
-				this->angularVelocity = def.intialAngularVelocity;
-				this->orientation.set(def.initialAxis.normalize(), def.initialAngle);
-				identity(force);
-				identity(torque);
-				this->world = world;
-
-				if (def.bodyType == Dynamic)
-				{
-					type_flags |= brBody::Dynamic;
-				}
-				else
-				{
-					type_flags |= brBody::Static;
-					identity(linearVelocity);
-					identity(angularVelocity);
-				}
-
-				if (def.canSleep)
-				{
-					type_flags |= brBody::CanSleep;
-				}
-
-				if (def.isAwake)
-				{
-					type_flags |= brBody::IsAwake;
-				}
-			}
-
-			
-
+		
 		protected:
 			///members
 			//Properties of a rigid body can be divided in two:
@@ -132,12 +99,44 @@ namespace octet {
 			vec3 torque;
 
 			///Holding a reference to the world, each type we create a body it will automatically add it to the world by using it as a friend class
-			bworld* world;
+			brWorld* world;
 
 			///Holding type of body by setting flags to a signed int
 			signed int type_flags;
 
 		public:
+
+			//public contructors
+			brBody(const brBodyDef& def, brWorld* world)
+			{
+				this->linearVelocity = def.intialLinearVelocity;
+				this->angularVelocity = def.intialAngularVelocity;
+				this->orientation.set(def.initialAxis.normalize(), def.initialAngle);
+				identity(force);
+				identity(torque);
+				this->world = world;
+
+				if (def.bodyType == Dynamic)
+				{
+					type_flags |= brBody::Dynamic;
+				}
+				else
+				{
+					type_flags |= brBody::Static;
+					identity(linearVelocity);
+					identity(angularVelocity);
+				}
+
+				if (def.canSleep)
+				{
+					type_flags |= brBody::CanSleep;
+				}
+
+				if (def.isAwake)
+				{
+					type_flags |= brBody::IsAwake;
+				}
+			}
 
 			void ApplyLinearForce(const vec3& force)
 			{
@@ -172,6 +171,11 @@ namespace octet {
 			const quat GetOrientation() const
 			{
 				return orientation;
+			}
+
+			void Integrate()
+			{
+				
 			}
 
 			~brBody()
