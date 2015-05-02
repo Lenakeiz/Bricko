@@ -39,6 +39,9 @@
     <Filter Include="physics\dynamics">
       <UniqueIdentifier>{d508d751-5ae1-4755-bd7f-f91a45854021}</UniqueIdentifier>
     </Filter>
+    <Filter Include="physics\broadphase">
+      <UniqueIdentifier>{821e54f3-0ed0-4081-b2ab-fe4cbc314289}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -442,6 +445,9 @@
     </ClInclude>
     <ClInclude Include="..\..\math\mat3.h">
       <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\physics\broadphase\brBroadPhase.h">
+      <Filter>physics\broadphase</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -26,7 +26,7 @@ namespace octet { namespace brickophysics {
 		void ApplyForces(brBody* bd)
 		{
 			//to a body can be applied more kind of forces (all derived from force generator)
-			for
+			
 		}
 
 	public:		
@@ -37,7 +37,7 @@ namespace octet { namespace brickophysics {
 		}
 
 		///This function will run the physics 
-		void Run(double dt) ///this will be the time step, expected is 1.0/60.0
+		void Run(float dt) ///this will be the time step, expected is 1.0/60.0
 		{
 
 			//Move objects
@@ -45,12 +45,9 @@ namespace octet { namespace brickophysics {
 			{
 				//integrate velocity
 				body->Integrate(dt);
-
+				
 				//Apply forces (gravity)
-				ApplyForces(body);
-
-				//Clear forces
-
+				ApplyForces(body);				
 			}
 
 			

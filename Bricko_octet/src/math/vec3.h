@@ -9,6 +9,7 @@
 
 namespace octet { namespace math {
   class mat4t;
+  class mat3;
   class vec3;
   class vec4;
   class ivec3;

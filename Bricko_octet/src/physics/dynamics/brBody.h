@@ -61,6 +61,12 @@ namespace octet {
 				bIsAwake = 0x010,
 			};
 		
+			void ClearAccumulators()
+			{
+				identity(force);
+				identity(torque);
+			}
+
 		protected:
 			///members
 			//Properties of a rigid body can be divided in two:
@@ -69,8 +75,8 @@ namespace octet {
 			//Finally there are some properties that can be derived from others such as inverse of tensor in world coordinate
 
 			///Holding inverse cause it s easy to handle static objects(Millington)
-			double inverseMass;
-			double mass;
+			float inverseMass;
+			float mass;
 			///Holding inverse of the body tensor given in body coordinate
 			mat3 inverseInertiaBodyTensor;
 
@@ -109,9 +115,15 @@ namespace octet {
 			//public contructors
 			brBody(const brBodyDef& def, brWorld* world)
 			{
-				this->linearVelocity = def.intialLinearVelocity;
-				this->angularVelocity = def.intialAngularVelocity;
-				this->orientation.set(def.initialAxis.normalize(), def.initialAngle);
+				linearVelocity = def.intialLinearVelocity;
+				angularVelocity = def.intialAngularVelocity;
+				orientation.set(def.initialAxis.normalize(), def.initialAngle);
+
+				//TODO set the transform matrix
+				transformMatrix.loadIdentity();
+				transformMatrix.set_rotation(orientation.ToMat3());
+				transformMatrix.set_translation(def.initialPosition);
+
 				identity(force);
 				identity(torque);
 				this->world = world;
@@ -173,23 +185,31 @@ namespace octet {
 				return orientation;
 			}
 
-			void Integrate(double dt)
+			void Integrate(float dt)
 			{
 				if (type_flags & brBody::bDynamic)
 				{
 					//Calculate inverse of inertia tensor in world coordinate
+					//TODO
+					//mat3 rot = transformMatrix.get_rotation_matrix();
+					linearVelocity += (force * inverseMass) * dt;
+					angularVelocity += (inverseInertiaWorldTensor * torque) * dt;
+					
+					// Imposing drag for energy balance
+					// TODO
 
-					this->linearVelocity += (force * inverseMass) * dt;
-					this->angularVelocity += (inverseInertiaWorldTensor * torque) * dt;
+					//Update positions and rotations
+					worldpos += linearVelocity * dt;
+					orientation.update(angularVelocity, dt);
+					normalize(orientation);
+
+					//finally update transform matrix
+
+
+					ClearAccumulators();
 				}
 				else{ return; }
 				
-			}
-
-			void ClearAccumulators()
-			{
-				identity(force);
-				identity(torque);
 			}
 
 			~brBody()

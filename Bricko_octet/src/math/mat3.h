@@ -5,6 +5,7 @@ namespace octet { namespace math {
 
 	class mat3{
 	private:
+
 	protected:
 		vec3 x;
 		vec3 y;
@@ -55,7 +56,14 @@ namespace octet { namespace math {
 			);
 		}
 
-		///This is used when setting a rotational matrix
+		// access X row
+		vec3& getX() { return x; }
+
+		// access Y row
+		vec3& getY() { return y; }
+
+		// access Z row
+		vec3& getZ() { return z; }
 
 
 	};
