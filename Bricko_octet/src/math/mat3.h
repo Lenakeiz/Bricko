@@ -45,6 +45,16 @@ namespace octet { namespace math {
 			z[2] = i;
 		}
 
+		///Operator functions
+		const vec3 operator*(const vec3& rhs) const
+		{
+			return vec3(
+				x.x() *	rhs.x() + y.x() * rhs.y() + z.x() * rhs.z(),
+				x.y() * rhs.x() + y.y() * rhs.y() + z.y() * rhs.z(),
+				x.z() * rhs.x() + y.z() * rhs.y() + z.z() * rhs.z()
+			);
+		}
+
 		///This is used when setting a rotational matrix
 
 

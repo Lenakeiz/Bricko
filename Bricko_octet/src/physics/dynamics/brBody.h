@@ -55,10 +55,10 @@ namespace octet {
 
 			enum
 			{
-				Dynamic = 0x001,
-				Static = 0x002,
-				CanSleep = 0x004,
-				IsAwake = 0x010,
+				bDynamic = 0x001,
+				bStatic = 0x002,
+				bCanSleep = 0x004,
+				bIsAwake = 0x010,
 			};
 		
 		protected:
@@ -118,23 +118,23 @@ namespace octet {
 
 				if (def.bodyType == Dynamic)
 				{
-					type_flags |= brBody::Dynamic;
+					type_flags |= brBody::bDynamic;
 				}
 				else
 				{
-					type_flags |= brBody::Static;
+					type_flags |= brBody::bStatic;
 					identity(linearVelocity);
 					identity(angularVelocity);
 				}
 
 				if (def.canSleep)
 				{
-					type_flags |= brBody::CanSleep;
+					type_flags |= brBody::bCanSleep;
 				}
 
 				if (def.isAwake)
 				{
-					type_flags |= brBody::IsAwake;
+					type_flags |= brBody::bIsAwake;
 				}
 			}
 
@@ -173,9 +173,23 @@ namespace octet {
 				return orientation;
 			}
 
-			void Integrate()
+			void Integrate(double dt)
 			{
+				if (type_flags & brBody::bDynamic)
+				{
+					//Calculate inverse of inertia tensor in world coordinate
+
+					this->linearVelocity += (force * inverseMass) * dt;
+					this->angularVelocity += (inverseInertiaWorldTensor * torque) * dt;
+				}
+				else{ return; }
 				
+			}
+
+			void ClearAccumulators()
+			{
+				identity(force);
+				identity(torque);
 			}
 
 			~brBody()
