@@ -4,6 +4,10 @@
 namespace octet {
 	namespace brickophysics {
 
+		class brBox;
+		class brBoxDef;
+		struct brMassData;
+
 		enum BodyType{
 			Static,
 			Dynamic
@@ -67,6 +71,38 @@ namespace octet {
 				identity(torque);
 			}
 
+			void CalcultateDerivedProperties()
+			{
+				mat3 inertia = diagonal(0.0f);
+				inverseInertiaBodyTensor = diagonal(0.0f);
+				inverseInertiaWorldTensor = diagonal(0.0f);
+				inverseMass = 0.0f;
+				mass = 0.0f;
+
+				if (type_flags & bStatic)
+				{
+					identity(localpos);
+					worldpos = transformMatrix.get_translation();
+				
+					return;
+				}
+
+				vec3 localCenter;
+				identity(localCenter);
+
+				float finalmass = 0.0f;
+
+				if (boxref)
+				{
+					if (boxref->density != 0.0f)
+					{
+						brMassData data;
+						box->ComputeMass( &data);
+					}						
+				}
+
+			}
+
 		protected:
 			///members
 			//Properties of a rigid body can be divided in two:
@@ -83,8 +119,11 @@ namespace octet {
 			///Holding inverse of the body tensor in world space
 			mat3 inverseInertiaWorldTensor;
 
-			///Holding position in world space
+			///Holding center position in world space
 			vec3 worldpos;
+
+			///Holding center position in local space
+			vec3 localpos;
 
 			///Holding orientation in world space
 			quat orientation;
@@ -103,6 +142,9 @@ namespace octet {
 
 			///Holding accumulated torque to be applied next integration
 			vec3 torque;
+
+			///Holding reference to the box
+			brBox* boxref;
 
 			///Holding a reference to the world, each type we create a body it will automatically add it to the world by using it as a friend class
 			brWorld* world;
@@ -148,6 +190,24 @@ namespace octet {
 				{
 					type_flags |= brBody::bIsAwake;
 				}
+			}
+
+			void ConnectBox(const brBoxDef& boxdef)
+			{
+				brBox* box = new brBox();
+				box->localtransform = boxdef.transform;
+				box->halfextent = boxdef.halfextent;
+
+				box->body = this;
+
+				box->friction = boxdef.friction;
+				box->restitution = boxdef.restitution;
+				box->density = boxdef.density;
+
+				boxref = box;
+
+				CalcultateDerivedProperties();
+
 			}
 
 			void ApplyLinearForce(const vec3& force)

@@ -21,6 +21,7 @@
 //
 // The inverse of the matrix transforms the other way. so inverse4x4(modelToWorld) == worldToModel
 //
+
 namespace octet { namespace math {
   /// 4x4 Matrix class
   class mat4t {
@@ -487,19 +488,34 @@ namespace octet { namespace math {
 		  }
     }
   
+	///Chuck
 	///Set element for rotation
 	void set_rotation(mat3 rot)
 	{
 		//TODO check consistency
-		x() = vec4(rot.getX(), v[0][3]);
-		y() = vec4(rot.getY(), v[1][3]);
-		z() = vec4(rot.getZ(), v[2][3]);
+		//x() = vec4(rot.getX(), v[0][3]);
+		//y() = vec4(rot.getY(), v[1][3]);
+		//z() = vec4(rot.getZ(), v[2][3]);
+		x() = vec4(rot.getX(), 0.0f);
+		y() = vec4(rot.getY(), 0.0f);
+		z() = vec4(rot.getZ(), 0.0f);
 	}
 
 	void set_translation(const vec3& translation)
 	{
 		//TODO check consistency
-		w() = vec4(translation, v[3][3]);
+		//w() = vec4(translation, v[3][3]);
+		w() = vec4(translation, 1.0);
+	}
+
+	vec3 get_translation()
+	{
+		return vec3(v[3].xyz());
+	}
+
+	mat3 get_rotation()
+	{
+		//TODO add body method
 	}
 
     /// Convert to a string for debugging.

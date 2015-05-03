@@ -1,6 +1,13 @@
 #ifndef MAT3_INCLUDED
 #define MAT3_INCLUDED
 
+///This matrix will hold rotation for the transform
+///Each vector is row vector of the matrix
+
+// a b c
+// d e f
+// g h i
+
 namespace octet { namespace math {
 
 	class mat3{
@@ -46,13 +53,13 @@ namespace octet { namespace math {
 			z[2] = i;
 		}
 
-		///Operator functions
-		const vec3 operator*(const vec3& rhs) const
+		///Operator functions: left vector multiplication ( 1 x N ) * (N x N)
+		const vec3 operator*(const vec3& lhs) const
 		{
 			return vec3(
-				x.x() *	rhs.x() + y.x() * rhs.y() + z.x() * rhs.z(),
-				x.y() * rhs.x() + y.y() * rhs.y() + z.y() * rhs.z(),
-				x.z() * rhs.x() + y.z() * rhs.y() + z.z() * rhs.z()
+				x.x() *	lhs.x() + y.x() * lhs.y() + z.x() * lhs.z(),
+				x.y() * lhs.x() + y.y() * lhs.y() + z.y() * lhs.z(),
+				x.z() * lhs.x() + y.z() * lhs.y() + z.z() * lhs.z()
 			);
 		}
 
@@ -67,6 +74,24 @@ namespace octet { namespace math {
 
 
 	};
+
+	inline const mat3 diagonal(float r)
+	{
+		return mat3(
+				r, 0.0f, 0.0f,
+				0.0f, r, 0.0f,
+				0.0f, 0.0f, r
+			);
+	}
+
+	inline const mat3 diagonal(float a, float b, float c)
+	{
+		return mat3(
+			a, 0.0f, 0.0f,
+			0.0f, b, 0.0f,
+			0.0f, 0.0f, c
+			);
+	}
 
 } }
 #endif
