@@ -8,6 +8,7 @@
 #define BRWORLD_INCLUDED
 
 #include "dynamics\brBody.h"
+#include "shape\brBox.h"
 
 namespace octet { namespace brickophysics {
 

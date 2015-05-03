@@ -42,6 +42,9 @@
     <Filter Include="physics\broadphase">
       <UniqueIdentifier>{821e54f3-0ed0-4081-b2ab-fe4cbc314289}</UniqueIdentifier>
     </Filter>
+    <Filter Include="physics\shape">
+      <UniqueIdentifier>{beeef9b2-2e76-47b8-8ce1-c7ea235a700a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -448,6 +451,9 @@
     </ClInclude>
     <ClInclude Include="..\..\physics\broadphase\brBroadPhase.h">
       <Filter>physics\broadphase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\physics\shape\brBox.h">
+      <Filter>physics\shape</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
