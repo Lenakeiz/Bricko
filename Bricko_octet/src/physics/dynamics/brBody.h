@@ -8,6 +8,12 @@ namespace octet {
 		class brBoxDef;
 		struct brMassData;
 
+		struct brTransform
+		{
+			vec3 position;
+			mat3 rotation;
+		};
+
 		enum BodyType{
 			Static,
 			Dynamic
