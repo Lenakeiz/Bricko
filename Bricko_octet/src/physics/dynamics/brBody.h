@@ -93,8 +93,8 @@ namespace octet {
 					return;
 				}
 
-				vec3 localCenter;
-				identity(localCenter);
+				vec3 lc;
+				identity(lc);
 
 				float finalmass = 0.0f;
 
@@ -103,9 +103,36 @@ namespace octet {
 					if (boxref->density != 0.0f)
 					{
 						brMassData data;
-						box->ComputeMass( &data);
+						boxref->ComputeMass(&data);
+						finalmass = data.mass;
+						inertia = data.inertia;
+						lc = data.center * data.mass;
 					}						
 				}
+
+				if (finalmass > 0.0f)
+				{
+					mass = finalmass;
+					inverseMass = 1.0f / mass;
+					lc *= inverseMass;
+
+					mat3 id;
+					id.loadIdentity();
+
+					inertia -= (id * lc.dot(lc) - lc.outer_product(lc)) * finalmass;
+
+					inverseInertiaBodyTensor = inverse(inertia);
+
+				}
+				else
+				{
+					inverseMass = 1.0f;
+					inverseInertiaBodyTensor = diagonal(0.0f);
+					inverseInertiaWorldTensor = diagonal(0.0f);
+				}
+
+				localpos = lc;
+				worldpos = multiply(transform, lc);
 
 			}
 
@@ -281,9 +308,6 @@ namespace octet {
 					normalize(orientation);
 
 					//finally update transform matrix
-
-
-					ClearAccumulators();
 				}
 				else{ return; }
 				
@@ -294,6 +318,11 @@ namespace octet {
 			}
 
 		};
+
+		inline const vec3 multiply(const brTransform& t, const vec3& v)
+		{
+			return vec3(t.rotation * v + t.position);
+		}
 
 } }
 #endif

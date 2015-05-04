@@ -116,9 +116,23 @@ namespace octet { namespace math {
     }
 
     // dot product
-    float dot(const vec3 &r) const {
+    float dot(const vec3 &r) const
+	{
       return (*this * r).sum();
     }
+
+	mat3 outer_product(const vec3 &r) const
+	{
+		vec3 a = r * this->x();
+		vec3 b = r * this->y();
+		vec3 c = r * this->z();
+
+		return mat3(
+			a.x(), a.y(), a.z(),
+			b.x(), b.y(), b.z(),
+			c.x(), c.y(), c.z()
+			);
+	}
 
     // make the length equal to 1
     vec3 normalize() const {

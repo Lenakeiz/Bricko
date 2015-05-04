@@ -40,19 +40,14 @@ namespace octet { namespace brickophysics {
 		///This function will run the physics 
 		void Run(float dt) ///this will be the time step, expected is 1.0/60.0
 		{
-
-			//Move objects
 			for each (brBody* body in bodies)
 			{
+				//Apply forces (gravity)
+				ApplyForces(body);
 				//integrate velocity
 				body->Integrate(dt);
-				
-				//Apply forces (gravity)
-				ApplyForces(body);				
+				body->ClearAccumulators();
 			}
-
-			
-
 		}
 
 		void addBody(const brBodyDef& body_def, const brBoxDef& box_def)
@@ -60,7 +55,7 @@ namespace octet { namespace brickophysics {
 			brBody* body = new brBody(body_def, this);
 			body->ConnectBox(box_def);
 			bodies.push_back(body);
-
+					
 			//Later on we will add the body to the broadphase manager
 
 		}

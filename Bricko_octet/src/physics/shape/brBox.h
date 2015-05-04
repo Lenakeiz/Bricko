@@ -13,7 +13,9 @@ namespace octet {
 		float restitution;
 		float density;
 		
-		mat4t transform;
+		mat4t transform_mat4t;
+		brTransform transform;
+
 		vec3 halfextent;
 
 		brBoxDef()
@@ -49,7 +51,7 @@ namespace octet {
 		float restitution;
 		float density;
 
-		void ComputeMass(brMassData& md) const
+		void ComputeMass(brMassData* md) const
 		{
 			//Constructing inertia sensor
 			float x2 = halfextent.x() * halfextent.x() * 4.0f;
@@ -66,10 +68,16 @@ namespace octet {
 			mat3 inertia = diagonal(diagx, diagy, diagz);
 
 			//Converting to local space
-			//TODO
-			//inertia = localtransform.rotation * inertia;
+			inertia = localtransform.rotation * inertia * localtransform.rotation.transpose();
+			mat3 id;
+			id.loadIdentity();
+			
 			//Setting mass data as a return
-			//TODO
+			inertia += (id * localtransform.position.dot(localtransform.position) - localtransform.position.outer_product(localtransform.position))* m;
+		
+			md->center = localtransform.position;
+			md->inertia = id;
+			md->mass = m;
 		}
 
 		brBox()
