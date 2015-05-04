@@ -88,8 +88,8 @@ namespace octet {
 				if (type_flags & bStatic)
 				{
 					identity(localpos);
-					worldpos = transformMatrix.get_translation();
-				
+					//worldpos = transformMatrix.get_translation();
+					worldpos = transform.position;
 					return;
 				}
 
@@ -142,6 +142,7 @@ namespace octet {
 
 			///Holding transform matrix
 			mat4t transformMatrix;
+			brTransform transform;
 
 			///Holding accumulated force applied to the body to be applied next integration
 			vec3 force;
@@ -168,9 +169,14 @@ namespace octet {
 				orientation.set(def.initialAxis.normalize(), def.initialAngle);
 
 				//TODO set the transform matrix
+				//OLD VERSION
 				transformMatrix.loadIdentity();
 				transformMatrix.set_rotation(orientation.ToMat3());
 				transformMatrix.set_translation(def.initialPosition);
+
+				//NEW VERSION
+				transform.rotation = orientation.ToMat3();
+				transform.position = def.initialPosition;
 
 				identity(force);
 				identity(torque);
@@ -236,9 +242,14 @@ namespace octet {
 				return angularVelocity;
 			}
 
-			const mat4t GetTransform() const
+			const mat4t GetTransformMat4t() const
 			{
 				return transformMatrix;
+			}
+
+			const brTransform GetTransform()
+			{
+				return transform;
 			}
 
 			const vec3 GetPosition() const

@@ -37,7 +37,9 @@ namespace octet {
 	{
 	public:
 
-		mat4t localtransform;
+		mat4t localtransform_mat4t;
+		brTransform localtransform;
+
 		vec3 halfextent;
 
 		//Holding reference to its body
@@ -61,11 +63,11 @@ namespace octet {
 			float diagy = (1.0f / 12.0f) * m * (x2 + z2);
 			float diagz = (1.0f / 12.0f) * m * (x2 + y2);
 			
-			mat3 iner = diagonal(diagx, diagy, diagz);
+			mat3 inertia = diagonal(diagx, diagy, diagz);
 
 			//Converting to local space
 			//TODO
-
+			//inertia = localtransform.rotation * inertia;
 			//Setting mass data as a return
 			//TODO
 		}
