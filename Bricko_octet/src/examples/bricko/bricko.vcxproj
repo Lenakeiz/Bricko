@@ -131,6 +131,8 @@
     <ClInclude Include="..\..\math\vec3.h" />
     <ClInclude Include="..\..\math\vec4.h" />
     <ClInclude Include="..\..\math\zcylinder.h" />
+    <ClInclude Include="..\..\physics\brForceGenerator.h" />
+    <ClInclude Include="..\..\physics\bricko.h" />
     <ClInclude Include="..\..\physics\broadphase\brBroadPhase.h" />
     <ClInclude Include="..\..\physics\bworld.h" />
     <ClInclude Include="..\..\physics\dynamics\brBody.h" />
@@ -223,6 +225,7 @@
     <ClInclude Include="bricko_example.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\math\math_inline.inl" />
     <None Include="..\..\resources\mesh_builder.inl" />
     <None Include="..\..\resources\resources.inl" />
   </ItemGroup>

@@ -490,16 +490,16 @@ namespace octet { namespace math {
   
 	///Chuck
 	///Set element for rotation
-	void set_rotation(mat3 rot)
-	{
-		//TODO check consistency
-		//x() = vec4(rot.getX(), v[0][3]);
-		//y() = vec4(rot.getY(), v[1][3]);
-		//z() = vec4(rot.getZ(), v[2][3]);
-		x() = vec4(rot.getX(), 0.0f);
-		y() = vec4(rot.getY(), 0.0f);
-		z() = vec4(rot.getZ(), 0.0f);
-	}
+	//void set_rotation(mat3 rot)
+	//{
+	//	//TODO check consistency
+	//	//x() = vec4(rot.getX(), v[0][3]);
+	//	//y() = vec4(rot.getY(), v[1][3]);
+	//	//z() = vec4(rot.getZ(), v[2][3]);
+	//	x() = vec4(rot.getX(), 0.0f);
+	//	y() = vec4(rot.getY(), 0.0f);
+	//	z() = vec4(rot.getZ(), 0.0f);
+	//}
 
 	void set_translation(const vec3& translation)
 	{
@@ -513,10 +513,10 @@ namespace octet { namespace math {
 		return vec3(v[3].xyz());
 	}
 
-	mat3 get_rotation()
-	{
-		//TODO add body method
-	}
+	//mat3 get_rotation()
+	//{
+	//	//TODO add body method
+	//}
 
     /// Convert to a string for debugging.
     const char *toString(char *dest, size_t len) const

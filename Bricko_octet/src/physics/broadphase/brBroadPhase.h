@@ -4,8 +4,8 @@
 // 
 //
 
-#ifndef BRBROADPHASE_INCLUDED
-#define BRBROADPHASE_INCLUDED
+//#ifndef BRBROADPHASE_INCLUDED
+//#define BRBROADPHASE_INCLUDED
 
 namespace octet {
 	namespace brickophysics {
@@ -27,6 +27,6 @@ namespace octet {
 		};
 	}
 }
-#endif
+//#endif
 
 

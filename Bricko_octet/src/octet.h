@@ -139,9 +139,9 @@
 
 #ifdef BRICKO
 	#pragma warning(disable : 4267)
-	#include "physics/bworld.h"
+	
 #endif
-
+	#include "physics/bricko.h"
   // scene
   #include "scene/scene.h"
 

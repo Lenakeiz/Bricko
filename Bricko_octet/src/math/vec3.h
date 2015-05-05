@@ -8,10 +8,10 @@
 //
 
 namespace octet { namespace math {
-  class mat4t;
-  class mat3;
   class vec3;
   class vec4;
+  class mat3;
+  class mat4t;
   class ivec3;
   class ivec4;
 
@@ -120,19 +120,6 @@ namespace octet { namespace math {
 	{
       return (*this * r).sum();
     }
-
-	mat3 outer_product(const vec3 &r) const
-	{
-		vec3 a = r * this->x();
-		vec3 b = r * this->y();
-		vec3 c = r * this->z();
-
-		return mat3(
-			a.x(), a.y(), a.z(),
-			b.x(), b.y(), b.z(),
-			c.x(), c.y(), c.z()
-			);
-	}
 
     // make the length equal to 1
     vec3 normalize() const {

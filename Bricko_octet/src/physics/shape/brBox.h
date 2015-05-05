@@ -1,10 +1,19 @@
+//#ifndef BRBOX_INCLUDED
+//#define BRBOX_INCLUDED
+
 namespace octet {
 	namespace brickophysics {
 	
 	struct brMassData{
 		mat3 inertia;
 		vec3 center;
-		float mass
+		float mass;
+	};
+
+	struct brTransform
+	{
+		vec3 position;
+		mat3 rotation;
 	};
 
 	struct brBoxDef{
@@ -23,13 +32,15 @@ namespace octet {
 			friction = 0.4f;
 			restitution = 0.2f;
 			density = 1.0f;
-			transform.loadIdentity();
+			//TODO
+			//transform.loadIdentity();
 			halfextent = vec3(1.0, 1.0f, 1.0f);
 		}
 
 		void Set(const mat4t& t, const vec3& he)
 		{
-			transform = t;
+			//TODO
+			//transform = t;
 			halfextent = he * 0.5f;
 		}
 
@@ -45,7 +56,7 @@ namespace octet {
 		vec3 halfextent;
 
 		//Holding reference to its body
-		brBody* body;
+		//brBody* body;
 
 		float friction;
 		float restitution;
@@ -73,7 +84,7 @@ namespace octet {
 			id.loadIdentity();
 			
 			//Setting mass data as a return
-			inertia += (id * localtransform.position.dot(localtransform.position) - localtransform.position.outer_product(localtransform.position))* m;
+			inertia += (id * localtransform.position.dot(localtransform.position) - outer_product(localtransform.position, localtransform.position))* m;
 		
 			md->center = localtransform.position;
 			md->inertia = id;
@@ -88,6 +99,11 @@ namespace octet {
 		{
 		}
 	};
-} }
 
+	inline const vec3 multiply(const brTransform& t, const vec3& v)
+	{
+		return vec3(t.rotation * v + t.position);
+	}
+} }
+//#endif
 

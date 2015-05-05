@@ -455,6 +455,12 @@
     <ClInclude Include="..\..\physics\shape\brBox.h">
       <Filter>physics\shape</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\physics\brForceGenerator.h">
+      <Filter>physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\physics\bricko.h">
+      <Filter>physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\resources\mesh_builder.inl">
@@ -462,6 +468,9 @@
     </None>
     <None Include="..\..\resources\resources.inl">
       <Filter>resources</Filter>
+    </None>
+    <None Include="..\..\math\math_inline.inl">
+      <Filter>math</Filter>
     </None>
   </ItemGroup>
 </Project>

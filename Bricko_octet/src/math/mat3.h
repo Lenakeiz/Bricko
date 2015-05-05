@@ -8,9 +8,10 @@
 // d e f
 // g h i
 
-namespace octet { namespace math {
+namespace octet {
+	namespace math {
 
-	class mat3{
+	class mat3 {
 	private:
 
 	protected:		
@@ -130,41 +131,6 @@ namespace octet { namespace math {
 		//get column z
 		vec3 colz() { return vec3(x[2], y[2], z[2]); };
 	};
-
-	inline const mat3 diagonal(float r)
-	{
-		return mat3(
-				r, 0.0f, 0.0f,
-				0.0f, r, 0.0f,
-				0.0f, 0.0f, r
-			);
-	}
-
-	inline const mat3 diagonal(float a, float b, float c)
-	{
-		return mat3(
-			a, 0.0f, 0.0f,
-			0.0f, b, 0.0f,
-			0.0f, 0.0f, c
-			);
-	}
-
-	inline const mat3 inverse(const mat3& m)
-	{
-		vec3 a, b, c;
-		float det;
-
-		a = cross(m.y, m.z);
-		b = cross(m.z, m.x);
-		c = cross(m.x, m.y);
-
-		det = 1.0 / m.z.dot(c);
-
-		return mat3(
-			a.x() * det, b.x() * det, c.x() * det,
-			a.y() * det, b.y() * det, c.y() * det,
-			a.z() * det, b.z() * det, c.z() * det
-			);
-	}
+		
 } }
 #endif

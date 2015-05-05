@@ -1,18 +1,12 @@
-#ifndef BRBODY_INCLUDED
-#define BRBODY_INCLUDED
+//#ifndef BRBODY_INCLUDED
+//#define BRBODY_INCLUDED
 
 namespace octet {
 	namespace brickophysics {
 
-		class brBox;
-		class brBoxDef;
-		struct brMassData;
-
-		struct brTransform
-		{
-			vec3 position;
-			mat3 rotation;
-		};
+		//class brBox;
+		//class brBoxDef;
+		//struct brMassData;
 
 		enum BodyType{
 			Static,
@@ -98,7 +92,7 @@ namespace octet {
 
 				float finalmass = 0.0f;
 
-				if (boxref)
+				if (boxref != nullptr)
 				{
 					if (boxref->density != 0.0f)
 					{
@@ -119,7 +113,7 @@ namespace octet {
 					mat3 id;
 					id.loadIdentity();
 
-					inertia -= (id * lc.dot(lc) - lc.outer_product(lc)) * finalmass;
+					inertia -= (id * lc.dot(lc) - outer_product(lc, lc)) * finalmass;
 
 					inverseInertiaBodyTensor = inverse(inertia);
 
@@ -198,7 +192,7 @@ namespace octet {
 				//TODO set the transform matrix
 				//OLD VERSION
 				transformMatrix.loadIdentity();
-				transformMatrix.set_rotation(orientation.ToMat3());
+				//transformMatrix.set_rotation(orientation.ToMat3());
 				transformMatrix.set_translation(def.initialPosition);
 
 				//NEW VERSION
@@ -237,7 +231,7 @@ namespace octet {
 				box->localtransform = boxdef.transform;
 				box->halfextent = boxdef.halfextent;
 
-				box->body = this;
+				//box->body = this;
 
 				box->friction = boxdef.friction;
 				box->restitution = boxdef.restitution;
@@ -289,6 +283,16 @@ namespace octet {
 				return orientation;
 			}
 
+			const float GetMass() const
+			{
+				return mass;
+			}
+
+			bool HasFiniteMass() const
+			{
+				return inverseMass > 0.0f;
+			}
+
 			void Integrate(float dt)
 			{
 				if (type_flags & brBody::bDynamic)
@@ -319,10 +323,5 @@ namespace octet {
 
 		};
 
-		inline const vec3 multiply(const brTransform& t, const vec3& v)
-		{
-			return vec3(t.rotation * v + t.position);
-		}
-
 } }
-#endif
+//#endif

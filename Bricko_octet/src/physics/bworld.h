@@ -4,11 +4,13 @@
 // Bricko world
 //
 
-#ifndef BRWORLD_INCLUDED
-#define BRWORLD_INCLUDED
+//#ifndef BRWORLD_INCLUDED
+//#define BRWORLD_INCLUDED
 
-#include "dynamics\brBody.h"
-#include "shape\brBox.h"
+//#include "shape\brBox.h"
+//#include "dynamics\brBody.h"
+//
+//#include "brForceGenerator.h"
 
 namespace octet { namespace brickophysics {
 
@@ -26,8 +28,7 @@ namespace octet { namespace brickophysics {
 
 		void ApplyForces(brBody* bd)
 		{
-			//to a body can be applied more kind of forces (all derived from force generator)
-			
+			//to a body can be applied more kind of forces (all derived from force generator)			
 		}
 
 	public:		
@@ -38,7 +39,7 @@ namespace octet { namespace brickophysics {
 		}
 
 		///This function will run the physics 
-		void Run(float dt) ///this will be the time step, expected is 1.0/60.0
+		void Run(float dt) //this will be the time step, expected is 1.0/60.0
 		{
 			for each (brBody* body in bodies)
 			{
@@ -69,6 +70,6 @@ namespace octet { namespace brickophysics {
 		}
 	};
 } }
-#endif
+//#endif
 
 
