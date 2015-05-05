@@ -58,6 +58,10 @@ namespace octet { namespace scene {
       typedef void collison_shape_t;
     #endif
 
+	#ifdef BRICKO
+	  brWorld* bricko_world;
+	#endif
+
     void draw_aabb(const aabb &bb) {
       vec3 pos[8];
       vec3 center = bb.get_center();
@@ -285,6 +289,10 @@ namespace octet { namespace scene {
         solver = new btSequentialImpulseConstraintSolver();
         world = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, &config);
       #endif
+
+#ifdef BRICKO
+		bricko_world = new brWorld();
+#endif
     }
 
     ~visual_scene() {
@@ -328,11 +336,30 @@ namespace octet { namespace scene {
           btRigidBody * rigid_body = new btRigidBody(mass, motionState, shape, inertiaTensor);
           world->addRigidBody(rigid_body);
           rigid_body->setUserPointer(node);
-          node->set_rigid_body(rigid_body);
+		  node->set_rigid_body(rigid_body);
         }
       #endif
       return result;
     }
+
+	///helper to add a mesh instance and its correspective bricko physics object
+	mesh_instance* add_bricko_shape(mat4t_in mat, mesh *msh, material *mtl, const brBodyDef& bodydef, const brBoxDef& boxdef)
+	{
+		scene_node *node = new scene_node(this);
+		node->access_nodeToParent() = mat;
+
+		mesh_instance *result = NULL;
+		if (msh && mtl) {
+			result = new mesh_instance(node, msh, mtl);
+			add_mesh_instance(result);
+		}
+
+#ifdef BRICKO
+		brBody* rig_body = bricko_world->addBody(bodydef,boxdef);
+		node->set_bricko_rigid_body(rig_body);
+#endif
+		return result;
+	}
 
     /// Serialization
     void visit(visitor &v) {

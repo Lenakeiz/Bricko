@@ -55,11 +55,6 @@ namespace octet {
 			z[2] = i;
 		}
 
-		mat3 transpose() const
-		{
-			return  mat3();
-		}
-
 		mat3& loadIdentity()
 		{
 			x = vec3(1.0f, 0.0f, 0.0f);

@@ -214,6 +214,17 @@ namespace octet { namespace scene {
       }
     }
 
+	private:
+		brBody* bricko_body;
+	public:
+		brBody* get_bricko_rigid_body() const {
+			return bricko_body;
+		}
+
+		void set_bricko_rigid_body(brBody *value) {
+			bricko_body = value;
+		}
+
     #ifdef OCTET_BULLET
     private:
       btRigidBody *rigid_body;

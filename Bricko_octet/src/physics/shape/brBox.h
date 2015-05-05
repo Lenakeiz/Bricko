@@ -39,8 +39,13 @@ namespace octet {
 
 		void Set(const mat4t& t, const vec3& he)
 		{
-			//TODO
-			//transform = t;
+			transform_mat4t = t;
+			halfextent = he * 0.5f;
+		}
+
+		void Set(const brTransform& t, const vec3& he)
+		{
+			transform = t;
 			halfextent = he * 0.5f;
 		}
 
@@ -79,7 +84,7 @@ namespace octet {
 			mat3 inertia = diagonal(diagx, diagy, diagz);
 
 			//Converting to local space
-			inertia = localtransform.rotation * inertia * localtransform.rotation.transpose();
+			inertia = localtransform.rotation * inertia * transpose(localtransform.rotation);
 			mat3 id;
 			id.loadIdentity();
 			
@@ -103,6 +108,12 @@ namespace octet {
 	inline const vec3 multiply(const brTransform& t, const vec3& v)
 	{
 		return vec3(t.rotation * v + t.position);
+	}
+
+	inline void identity(brTransform& t)
+	{
+		identity(t.position);
+		t.rotation.loadIdentity();
 	}
 } }
 //#endif

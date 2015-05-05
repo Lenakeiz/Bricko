@@ -49,5 +49,14 @@ namespace octet {
 				c.x(), c.y(), c.z()
 				);
 		}
+
+		inline const mat3 transpose(const mat3& m)
+		{
+			return mat3(
+				m.x.x(), m.y.x(), m.z.x(),
+				m.x.y(), m.y.y(), m.z.y(),
+				m.x.z(), m.y.z(), m.z.z()
+				);
+		}
 	}
 }

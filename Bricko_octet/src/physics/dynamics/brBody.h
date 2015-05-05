@@ -74,6 +74,9 @@ namespace octet {
 			void CalcultateDerivedProperties()
 			{
 				mat3 inertia = diagonal(0.0f);
+				vec3 lc;
+				float finalmass = 0.0f;
+
 				inverseInertiaBodyTensor = diagonal(0.0f);
 				inverseInertiaWorldTensor = diagonal(0.0f);
 				inverseMass = 0.0f;
@@ -86,12 +89,9 @@ namespace octet {
 					worldpos = transform.position;
 					return;
 				}
-
-				vec3 lc;
+			
 				identity(lc);
-
-				float finalmass = 0.0f;
-
+				
 				if (boxref != nullptr)
 				{
 					if (boxref->density != 0.0f)
@@ -191,9 +191,9 @@ namespace octet {
 
 				//TODO set the transform matrix
 				//OLD VERSION
-				transformMatrix.loadIdentity();
+				//transformMatrix.loadIdentity();
 				//transformMatrix.set_rotation(orientation.ToMat3());
-				transformMatrix.set_translation(def.initialPosition);
+				//transformMatrix.set_translation(def.initialPosition);
 
 				//NEW VERSION
 				transform.rotation = orientation.ToMat3();
@@ -201,6 +201,7 @@ namespace octet {
 
 				identity(force);
 				identity(torque);
+
 				this->world = world;
 
 				if (def.bodyType == Dynamic)

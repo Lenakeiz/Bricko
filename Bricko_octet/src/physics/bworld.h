@@ -51,14 +51,14 @@ namespace octet { namespace brickophysics {
 			}
 		}
 
-		void addBody(const brBodyDef& body_def, const brBoxDef& box_def)
+		brBody* addBody(const brBodyDef& body_def, const brBoxDef& box_def)
 		{
 			brBody* body = new brBody(body_def, this);
 			body->ConnectBox(box_def);
 			bodies.push_back(body);
 					
 			//Later on we will add the body to the broadphase manager
-
+			return body;
 		}
 
 		brWorld()
