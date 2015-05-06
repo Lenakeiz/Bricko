@@ -25,29 +25,49 @@ namespace octet { namespace brickophysics {
 		//ContactResolver
 
 		dynarray<brBody*> bodies;
+		ForceRegistry forceregistry;
 
-		void ApplyForces(brBody* bd)
+		brForceGenerator* gravityForce;
+
+		void ApplyForces(float dt)
 		{
-			//to a body can be applied more kind of forces (all derived from force generator)			
+			//to a body can be applied more kind of forces (all derived from force generator)
+			forceregistry.updateForces(dt);
 		}
 
 	public:		
 
-		void Init()
+		void Init(const vec3& gravity)
 		{
 			//this function will init all the classes handled by the bWorld
+
+			//setting gravity
+			gravityForce = new Gravity(gravity);
 		}
 
 		///This function will run the physics 
 		void Run(float dt) //this will be the time step, expected is 1.0/60.0
 		{
+			//Apply forces
+			ApplyForces(dt);
+
 			for each (brBody* body in bodies)
 			{
-				//Apply forces (gravity)
-				ApplyForces(body);
 				//integrate velocity
 				body->Integrate(dt);
 				body->ClearAccumulators();
+			}
+		}
+
+		void UpdateRenderingPos()
+		{
+			for each (brBody* body in bodies)
+			{
+				//set the scene node by getting the user data
+				//octet::scene::scene_node* node = (octet::scene::scene_node*)body->GetUserData();
+				//brTransform tr = body->GetTransform();
+				//mat4t mat = generate_mat4t(tr.rotation, tr.position);
+				//node->access_nodeToParent();// = mat;
 			}
 		}
 
@@ -56,7 +76,7 @@ namespace octet { namespace brickophysics {
 			brBody* body = new brBody(body_def, this);
 			body->ConnectBox(box_def);
 			bodies.push_back(body);
-					
+			forceregistry.add(body, gravityForce);
 			//Later on we will add the body to the broadphase manager
 			return body;
 		}

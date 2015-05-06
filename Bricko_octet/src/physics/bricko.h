@@ -8,6 +8,7 @@ namespace octet {
 		OCTET_HUNGARIANS(brBroadPhase);
 		OCTET_HUNGARIANS(brForceGenerator);
 		OCTET_HUNGARIANS(Gravity);
+		OCTET_HUNGARIANS(ForceRegistry);
 		OCTET_HUNGARIANS(brWorld);
 	}
 	using namespace brickophysics;

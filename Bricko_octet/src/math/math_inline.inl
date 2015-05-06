@@ -1,6 +1,17 @@
 
 namespace octet {
 	namespace math{
+
+		inline const mat4t generate_mat4t(const mat3& r, const vec3&v)
+		{
+			return mat4t(vec4(r.x,0.0f),vec4(r.y,0.0f),vec4(r.z,0.0f),vec4(v,1.0f));
+		}
+
+		inline const vec3 multiply(const mat3& r, const vec3& v)
+		{
+			return r * v;
+		}
+
 		inline const mat3 diagonal(float r)
 		{
 			return mat3(

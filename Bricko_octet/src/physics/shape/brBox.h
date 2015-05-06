@@ -61,7 +61,7 @@ namespace octet {
 		vec3 halfextent;
 
 		//Holding reference to its body
-		//brBody* body;
+		brBody* body;
 
 		float friction;
 		float restitution;
@@ -92,7 +92,7 @@ namespace octet {
 			inertia += (id * localtransform.position.dot(localtransform.position) - outer_product(localtransform.position, localtransform.position))* m;
 		
 			md->center = localtransform.position;
-			md->inertia = id;
+			md->inertia = inertia;
 			md->mass = m;
 		}
 

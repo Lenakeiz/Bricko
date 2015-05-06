@@ -30,18 +30,19 @@ namespace octet { namespace math {
 		z() = axis[2] * s;
 		w() = cosf(halfangle);		
 	}
+
 	///Millington
-	void update(const vec3& vt, double dt)
+	void update(const vec3& vt, float dt_f)
 	{
-		float dt_f = (float)dt;
+		//float dt_f = (float)dt;
 		quat q(vt.x() * dt_f, vt.y() * dt_f, vt.z() * dt_f, 0.0f);
 
 		q *= *this;
 
-		x() = q.x() * 0.5f;
-		y() = q.y() * 0.5f;
-		z() = q.z() * 0.5f;
-		w() = q.w() * 0.5f;
+		x() += q.x() * 0.5f;
+		y() += q.y() * 0.5f;
+		z() += q.z() * 0.5f;
+		w() += q.w() * 0.5f;
 
 	}
 	const mat3 ToMat3()

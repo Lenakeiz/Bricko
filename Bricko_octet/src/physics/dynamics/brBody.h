@@ -177,6 +177,9 @@ namespace octet {
 			///Holding a reference to the world, each type we create a body it will automatically add it to the world by using it as a friend class
 			brWorld* world;
 
+			///Holding reference to user data (can be useful in any application, taking inspiration from Bullet Physics
+			void* user_data;
+
 			///Holding type of body by setting flags to a signed int
 			signed int type_flags;
 
@@ -232,7 +235,7 @@ namespace octet {
 				box->localtransform = boxdef.transform;
 				box->halfextent = boxdef.halfextent;
 
-				//box->body = this;
+				box->body = this;
 
 				box->friction = boxdef.friction;
 				box->restitution = boxdef.restitution;
@@ -289,6 +292,16 @@ namespace octet {
 				return mass;
 			}
 
+			void SetUserData(void* pointer)
+			{
+				user_data = pointer;
+			}
+
+			void* GetUserData()
+			{
+				return user_data;
+			}
+
 			bool HasFiniteMass() const
 			{
 				return inverseMass > 0.0f;
@@ -299,13 +312,15 @@ namespace octet {
 				if (type_flags & brBody::bDynamic)
 				{
 					//Calculate inverse of inertia tensor in world coordinate
-					//TODO
-					//mat3 rot = transformMatrix.get_rotation_matrix();
+					mat3 rot = transform.rotation;
+					inverseInertiaWorldTensor = rot * inverseInertiaBodyTensor * transpose(rot);
+
 					linearVelocity += (force * inverseMass) * dt;
 					angularVelocity += (inverseInertiaWorldTensor * torque) * dt;
 					
 					// Imposing drag for energy balance
-					// TODO
+					linearVelocity  *= 1.0f / (1.0f + dt * 0.0f);
+					angularVelocity *= 1.0f / (1.0f + dt * 0.1f);
 
 					//Update positions and rotations
 					worldpos += linearVelocity * dt;
@@ -313,6 +328,9 @@ namespace octet {
 					normalize(orientation);
 
 					//finally update transform matrix
+					transform.rotation = orientation.ToMat3();
+					transform.position = worldpos - multiply(transform.rotation, transform.position);
+					
 				}
 				else{ return; }
 				

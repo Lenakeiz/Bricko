@@ -292,6 +292,7 @@ namespace octet { namespace scene {
 
 #ifdef BRICKO
 		bricko_world = new brWorld();
+		bricko_world->Init(vec3(0, -9.8f, 0.0f));
 #endif
     }
 
@@ -302,6 +303,11 @@ namespace octet { namespace scene {
         delete broadphase;
         delete dispatcher;
       #endif
+
+	#ifdef BRICKO
+		//delete bricko_world;
+	#endif
+
     }
 
     /// helper to add a mesh to a scene and also to create the corresponding physics object
@@ -356,6 +362,7 @@ namespace octet { namespace scene {
 
 #ifdef BRICKO
 		brBody* rig_body = bricko_world->addBody(bodydef,boxdef);
+		rig_body->SetUserData(node);
 		node->set_bricko_rigid_body(rig_body);
 #endif
 		return result;
@@ -555,6 +562,13 @@ namespace octet { namespace scene {
 
     /// advance all the animation instances
     /// note that we want to update before rendering or doing physics and AI actions.
+
+	void update_physics(float dt)
+	{
+		bricko_world->Run(dt);
+		bricko_world->UpdateRenderingPos();
+	}
+
     void update(float delta_time) {
       #ifdef OCTET_BULLET
         world->stepSimulation(delta_time, 1, delta_time);
@@ -577,6 +591,14 @@ namespace octet { namespace scene {
 
       for (int idx = 0; idx != mesh_instances.size(); ++idx) {
         mesh_instance *inst = mesh_instances[idx];
+#ifdef BRICKO
+		scene_node* sc_node = inst->get_node();
+		brBody* brody = sc_node->get_bricko_rigid_body();
+		brTransform tr = brody->GetTransform();
+		mat4t mat = generate_mat4t(tr.rotation, tr.position);
+		sc_node->access_nodeToParent() = mat;
+#endif
+		
         inst->update(delta_time);
       }
     }

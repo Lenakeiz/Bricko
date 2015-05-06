@@ -30,10 +30,10 @@ namespace octet {
 	  node->rotate(45, vec3(0,0,1));
 	  node->translate(vec3(0, 4, 0));
 	  mat4t modelPos = node->access_nodeToParent();
-	  modelPos.get_principal_axis();
+	  vec3 mp = modelPos.get_principal_axis();
 
 	  brBodyDef bodydef;
-	  bodydef.initialPosition = modelPos.get_translation();
+	  bodydef.initialPosition = vec3(0, 4, 0);//modelPos.get_translation();
 	  bodydef.initialAxis = vec3(0, 0, 1);
 	  bodydef.initialAngle = 45 * (3.14159265f / 180); //bricko uses radiant
 	  bodydef.bodyType = Dynamic;
@@ -57,6 +57,14 @@ namespace octet {
       app_scene->begin_render(vx, vy);
 
       // update matrices. assume 30 fps.
+	  float dt = 1.0f / 30;
+	  float acc = 1.0f;
+	  //while (acc >= dt)
+	  {
+		  app_scene->update_physics(dt);
+		  acc -= dt;
+	  }
+		  
       app_scene->update(1.0f/30);
 
       // draw the scene
