@@ -9,7 +9,9 @@
 
 //Define if BRICKO physics must be used or not
 #define BRICKO 1
-#define OCTET_BULLET 0
+
+//if this is defined does not count the value...
+#define OCTET_BULET 0
 
 #include "../../octet.h"
 

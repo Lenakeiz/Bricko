@@ -32,8 +32,8 @@ namespace octet {
 			friction = 0.4f;
 			restitution = 0.2f;
 			density = 1.0f;
-			//TODO
-			//transform.loadIdentity();
+			identity(transform.position);
+			transform.rotation.loadIdentity();
 			halfextent = vec3(1.0, 1.0f, 1.0f);
 		}
 

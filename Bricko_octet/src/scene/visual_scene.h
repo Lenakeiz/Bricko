@@ -565,8 +565,10 @@ namespace octet { namespace scene {
 
 	void update_physics(float dt)
 	{
+#ifdef BRICKO
 		bricko_world->Run(dt);
-		bricko_world->UpdateRenderingPos();
+		//bricko_world->UpdateRenderingPos();
+#endif
 	}
 
     void update(float delta_time) {

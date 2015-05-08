@@ -319,7 +319,7 @@ namespace octet {
 					angularVelocity += (inverseInertiaWorldTensor * torque) * dt;
 					
 					// Imposing drag for energy balance
-					linearVelocity  *= 1.0f / (1.0f + dt * 0.0f);
+					linearVelocity  *= 1.0f / (1.0f + dt * 0.1f);
 					angularVelocity *= 1.0f / (1.0f + dt * 0.1f);
 
 					//Update positions and rotations
@@ -329,7 +329,7 @@ namespace octet {
 
 					//finally update transform matrix
 					transform.rotation = orientation.ToMat3();
-					transform.position = worldpos - multiply(transform.rotation, transform.position);
+					transform.position = worldpos - multiply(transform.rotation, localpos);
 					
 				}
 				else{ return; }
