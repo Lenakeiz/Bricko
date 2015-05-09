@@ -48,6 +48,8 @@ namespace octet { namespace brickophysics {
 		///This function will run the physics 
 		void Run(float dt) //this will be the time step, expected is 1.0/60.0
 		{
+			//TestCollisions
+			TestCollisions();
 			//Apply forces
 			ApplyForces(dt);
 
@@ -57,6 +59,9 @@ namespace octet { namespace brickophysics {
 				body->Integrate(dt);
 				body->ClearAccumulators();
 			}
+
+			
+
 		}
 
 		void UpdateRenderingPos()
@@ -79,6 +84,25 @@ namespace octet { namespace brickophysics {
 			forceregistry.add(body, gravityForce);
 			//Later on we will add the body to the broadphase manager
 			return body;
+		}
+
+		void TestCollisions()
+		{
+			for (unsigned i = 0; i < bodies.size() - 1; i++)
+			{
+				for (unsigned j = i + 1; j < bodies.size(); j++)
+				{
+					mat4t a = bodies[i]->GetTransformMat4t().transpose4x4();
+					
+					mat4t b = bodies[j]->GetTransformMat4t().transpose4x4();
+
+					if (bodies[i]->boxref->collisionVolume.intersects(bodies[j]->boxref->collisionVolume, a, b))
+					{
+						int stop = 1;
+						printf("Colliding: %d %d \n", i, j);
+					}
+				}
+			}
 		}
 
 		brWorld()

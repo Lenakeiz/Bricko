@@ -234,7 +234,7 @@ namespace octet {
 				brBox* box = new brBox();
 				box->localtransform = boxdef.transform;
 				box->halfextent = boxdef.halfextent;
-
+				box->collisionVolume = aabb(vec3(0, 0, 0), boxdef.halfextent);
 				box->body = this;
 
 				box->friction = boxdef.friction;
@@ -269,7 +269,7 @@ namespace octet {
 
 			const mat4t GetTransformMat4t() const
 			{
-				return transformMatrix;
+				return generate_mat4t(transform.rotation, transform.position);
 			}
 
 			const brTransform GetTransform()

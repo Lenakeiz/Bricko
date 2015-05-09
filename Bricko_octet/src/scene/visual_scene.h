@@ -595,9 +595,7 @@ namespace octet { namespace scene {
         mesh_instance *inst = mesh_instances[idx];
 #ifdef BRICKO
 		scene_node* sc_node = inst->get_node();
-		brBody* brody = sc_node->get_bricko_rigid_body();
-		brTransform tr = brody->GetTransform();
-		mat4t mat = generate_mat4t(tr.rotation, tr.position);
+		mat4t mat = sc_node->get_bricko_rigid_body()->GetTransformMat4t();
 		sc_node->access_nodeToParent() = mat;
 #endif
 		

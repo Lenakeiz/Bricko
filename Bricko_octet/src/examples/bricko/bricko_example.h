@@ -71,7 +71,8 @@ namespace octet {
 	  material *blue = new material(vec4(0, 0, 1, 1));
 	  mesh_box *box = new mesh_box(halfextent);
       
-	  vec3 iniPos = vec3(0.0f, 4.0f, 0.0f);
+	  vec3 iniPos = vec3(-20.0f, 4.0f, 0.0f);
+	  vec3 iniPos2 = vec3(20.0f, 4.0f, 0.0f);
 	  mat4t mat;
 
 	  mat.translate(iniPos);
@@ -93,7 +94,15 @@ namespace octet {
 	  //vec3 is halfextent
 	  boxdef.Set(t, halfextent);
 
+	  //box1
 	  app_scene->add_bricko_shape(mat, box, red, bodydef, boxdef);
+
+	  bodydef.initialPosition = iniPos2;
+	  bodydef.intialLinearVelocity = vec3(-20.0f, 30.0f, 0.0f);
+	  mat.loadIdentity();
+	  mat.translate(iniPos2);
+	  //box2
+	  app_scene->add_bricko_shape(mat, box, green, bodydef, boxdef);
 
 	  //adding a static object
 	  brBodyDef groundDef;
@@ -105,8 +114,9 @@ namespace octet {
 	  brBoxDef groundboxdef;
 	  //vec3 is halfextent
 	  groundboxdef.Set(t, vec3(50.0f, 1.0f, 50.0f));
-	  mat.loadIdentity();
+	  mat.loadIdentity();	  
 	  mesh_box *ground_box = new mesh_box(vec3(50.0f, 1.0f, 50.0f));
+	  //ground
 	  app_scene->add_bricko_shape(mat, ground_box, blue, groundDef, groundboxdef);
 
     }

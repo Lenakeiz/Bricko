@@ -25,8 +25,6 @@ namespace octet {
 		mat4t transform_mat4t;
 		brTransform transform;
 
-		aabb collisionVolume;
-
 		vec3 halfextent;
 
 		brBoxDef()
@@ -61,6 +59,8 @@ namespace octet {
 		brTransform localtransform;
 
 		vec3 halfextent;
+
+		aabb collisionVolume;
 
 		//Holding reference to its body
 		brBody* body;
