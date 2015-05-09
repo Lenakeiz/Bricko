@@ -318,6 +318,8 @@ namespace octet {
 					linearVelocity += (force * inverseMass) * dt;
 					angularVelocity += (inverseInertiaWorldTensor * torque) * dt;
 					
+					//damping the force instead the velocity
+
 					// Imposing drag for energy balance
 					linearVelocity  *= 1.0f / (1.0f + dt * 0.1f);
 					angularVelocity *= 1.0f / (1.0f + dt * 0.1f);

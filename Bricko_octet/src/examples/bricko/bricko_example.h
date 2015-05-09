@@ -97,10 +97,12 @@ namespace octet {
 
 	  //adding a static object
 	  brBodyDef groundDef;
+	  vec3 translation(0.0f, -15.0f, 0.0f);
 	  groundDef.bodyType = Static;
+	  groundDef.initialAxis = vec3(0, 1, 0).normalize();
+	  groundDef.initialPosition = translation;
 	  identity(t);
 	  brBoxDef groundboxdef;
-
 	  //vec3 is halfextent
 	  groundboxdef.Set(t, vec3(50.0f, 1.0f, 50.0f));
 	  mat.loadIdentity();

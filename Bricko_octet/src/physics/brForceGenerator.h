@@ -20,12 +20,15 @@ namespace octet{ namespace brickophysics{
 	public:
 		
 		Gravity(const vec3& _gravity) : gravity(_gravity)
-		{			
+		{
+
 		}
 
 		virtual void updateForce(brBody *body, float dt)
 		{
 			if (!body->HasFiniteMass()) return;
+
+			// vel * -(const) to damp the force 
 
 			// Apply the mass-scaled force to the body
 			body->ApplyLinearForce( gravity * body->GetMass());

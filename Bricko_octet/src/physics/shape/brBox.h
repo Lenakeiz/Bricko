@@ -25,6 +25,8 @@ namespace octet {
 		mat4t transform_mat4t;
 		brTransform transform;
 
+		aabb collisionVolume;
+
 		vec3 halfextent;
 
 		brBoxDef()
