@@ -57,7 +57,8 @@ namespace octet {
 
 		vec3 halfextent;
 
-		aabb collisionVolume;
+		///Holding reference to its colliding volume
+		brCollisionBox* collisionVolume;
 
 		//Holding reference to its body
 		brBody* body;

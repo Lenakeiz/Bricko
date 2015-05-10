@@ -135,8 +135,11 @@
     <ClInclude Include="..\..\physics\bricko.h" />
     <ClInclude Include="..\..\physics\broadphase\brBroadPhase.h" />
     <ClInclude Include="..\..\physics\bworld.h" />
+    <ClInclude Include="..\..\physics\collision\brCollisionData.h" />
+    <ClInclude Include="..\..\physics\collision\brContact.h" />
     <ClInclude Include="..\..\physics\dynamics\brBody.h" />
     <ClInclude Include="..\..\physics\shape\brBox.h" />
+    <ClInclude Include="..\..\physics\shape\brCollisionBox.h" />
     <ClInclude Include="..\..\platform\AL\al.h" />
     <ClInclude Include="..\..\platform\AL\alc.h" />
     <ClInclude Include="..\..\platform\AL\efx-creative.h" />

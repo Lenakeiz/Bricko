@@ -45,6 +45,9 @@
     <Filter Include="physics\shape">
       <UniqueIdentifier>{beeef9b2-2e76-47b8-8ce1-c7ea235a700a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="physics\collision">
+      <UniqueIdentifier>{94cb6337-daac-4c74-9b10-c460f39b56ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -460,6 +463,15 @@
     </ClInclude>
     <ClInclude Include="..\..\physics\bricko.h">
       <Filter>physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\physics\collision\brContact.h">
+      <Filter>physics\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\physics\collision\brCollisionData.h">
+      <Filter>physics\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\physics\shape\brCollisionBox.h">
+      <Filter>physics\shape</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

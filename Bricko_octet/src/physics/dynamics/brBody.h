@@ -234,7 +234,7 @@ namespace octet {
 				brBox* box = new brBox();
 				box->localtransform = boxdef.transform;
 				box->halfextent = boxdef.halfextent;
-				box->collisionVolume = aabb(vec3(0, 0, 0), boxdef.halfextent);
+				box->collisionVolume = new brCollisionBox(aabb(vec3(0, 0, 0), boxdef.halfextent));
 				box->body = this;
 
 				box->friction = boxdef.friction;
