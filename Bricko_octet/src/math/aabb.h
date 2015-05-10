@@ -157,7 +157,7 @@ namespace octet { namespace math {
       int t14 = fgt(abs(day * rxy - dax * ryy),  ahx * ayy + ahy * axy + bhx * azz + bhz * azx); // L = cross(az, by)
       int t15 = fgt(abs(day * rxz - dax * ryz),  ahx * ayz + ahy * axz + bhx * azy + bhy * azx); // L = cross(az, bz)
 
-      printf("%d %d %d  %d %d %d  %d %d %d  %d %d %d  %d %d %d (%d)\n", t1<0, t2<0, t3<0, t4<0, t5<0, t6<0, t7<0, t8<0, t9<0, t10<0, t11<0, t12<0, t13<0, t14<0, t15 < 0, (t1 & t2 & t3 & t4 & t5 & t6 & t7 & t8 & t9 & t10 & t11 & t12 & t13 & t14 & t15) < 0);
+      //printf("%d %d %d  %d %d %d  %d %d %d  %d %d %d  %d %d %d (%d)\n", t1<0, t2<0, t3<0, t4<0, t5<0, t6<0, t7<0, t8<0, t9<0, t10<0, t11<0, t12<0, t13<0, t14<0, t15 < 0, (t1 & t2 & t3 & t4 & t5 & t6 & t7 & t8 & t9 & t10 & t11 & t12 & t13 & t14 & t15) < 0);
 
       return (t1 & t2 & t3 & t4 & t5 & t6 & t7 & t8 & t9 & t10 & t11 & t12 & t13 & t14 & t15) < 0;
     }

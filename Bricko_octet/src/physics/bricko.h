@@ -18,6 +18,7 @@ namespace octet {
 #include "dynamics\brBody.h"
 #include "broadphase\brBroadPhase.h"
 #include "brForceGenerator.h"
+#include "collision\contact.h"
 #include "bworld.h"
 
 #endif

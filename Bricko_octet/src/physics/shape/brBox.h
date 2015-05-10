@@ -1,6 +1,3 @@
-//#ifndef BRBOX_INCLUDED
-//#define BRBOX_INCLUDED
-
 namespace octet {
 	namespace brickophysics {
 	
@@ -118,5 +115,4 @@ namespace octet {
 		t.rotation.loadIdentity();
 	}
 } }
-//#endif
 

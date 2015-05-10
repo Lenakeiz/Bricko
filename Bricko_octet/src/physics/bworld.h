@@ -92,11 +92,11 @@ namespace octet { namespace brickophysics {
 			{
 				for (unsigned j = i + 1; j < bodies.size(); j++)
 				{
-					mat4t a = bodies[i]->GetTransformMat4t().transpose4x4();
+					mat4t a = bodies[i]->GetTransformMat4t();
 					
-					mat4t b = bodies[j]->GetTransformMat4t().transpose4x4();
+					mat4t b = bodies[j]->GetTransformMat4t();
 
-					if (bodies[i]->boxref->collisionVolume.intersects(bodies[j]->boxref->collisionVolume, a, b))
+					if (bodies[i]->boxref->collisionVolume.intersects_old(bodies[j]->boxref->collisionVolume, a, b))
 					{
 						int stop = 1;
 						printf("Colliding: %d %d \n", i, j);
