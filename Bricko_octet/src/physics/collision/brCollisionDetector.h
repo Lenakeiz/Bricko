@@ -10,7 +10,7 @@ namespace octet {
 		public:
 
 			/// Method called when vertex and face 
-			void generateContactPointFaceBoxBoxData(
+			static void generateContactPointFaceBoxBoxData(
 				const brCollisionBox &a,
 				const brCollisionBox &b,
 				const vec3 &centre,
