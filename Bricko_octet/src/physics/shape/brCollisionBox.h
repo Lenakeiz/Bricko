@@ -54,7 +54,7 @@ namespace octet {
 		};
 
 		/**
-		* Givent the box transform we perform the calculation along the given axis   
+		* Given the box transform we perform the calculation along the given axis   
 		*/
 		static inline float transformToAxis(const brCollisionBox &box, const vec3& axis)
 		{
@@ -90,9 +90,17 @@ namespace octet {
 			//checking the overlap
 			return aProject + bProject - distance;
 		}
+
 		static inline bool tryAxis(const brCollisionBox& a, const brCollisionBox& b, const vec3& axis, const vec3& centre, unsigned index, float& smallestPenetration, unsigned &smallestCase)
 		{
 			float penetration = penetrationOnAxis(a, b, axis, centre);
+			if (penetration < 0) return false;
+			if (penetration < smallestPenetration)
+			{
+				smallestPenetration = penetration;
+				smallestCase = index;
+			}
+			return true;
 		}
 	}
 }
