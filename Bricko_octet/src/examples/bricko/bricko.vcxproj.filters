@@ -473,6 +473,9 @@
     <ClInclude Include="..\..\physics\shape\brCollisionBox.h">
       <Filter>physics\shape</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\physics\collision\brCollisionDetector.h">
+      <Filter>physics\collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\resources\mesh_builder.inl">

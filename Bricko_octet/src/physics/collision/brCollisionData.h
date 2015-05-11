@@ -6,7 +6,6 @@ namespace octet {
 
 			///Holding a contact array
 			brContact* contacts;
-
 			unsigned int contactsLeft;
 
 			brCollisionData()
@@ -16,6 +15,7 @@ namespace octet {
 			~brCollisionData()
 			{
 			}
+
 		};
 	}
 }
