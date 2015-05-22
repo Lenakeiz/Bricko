@@ -2,6 +2,7 @@ namespace octet {
 	namespace brickophysics {
 
 
+	///CHAPTER 13 MILLINGTON
 	#define CHECK_OVERLAP(axis, index) \
 		if (!tryAxis(a, b, (axis), centre, (index), penetration, best))
 
@@ -9,7 +10,7 @@ namespace octet {
 		{
 		public:
 
-			/// Method called when vertex and face 
+			/// Method called when vertex and face are interconnected
 			static void generateContactPointFaceBoxBoxData(
 				const brCollisionBox &a,
 				const brCollisionBox &b,
@@ -39,10 +40,9 @@ namespace octet {
 				contact->contactNormal = normal;
 				contact->penetration = penetration;
 
-				//TODO check consistency f this transformation
+				//TODO check consistency with this transformation
 				contact->contactPoint = (b.transform * vec4(vertex, 0.0f)).xyz();
-				//TODO set Data for this contact
-				//contact->setData()
+				contact->setData(a.body, b.body, data->friction, data->restitution);
 			}
 				
 

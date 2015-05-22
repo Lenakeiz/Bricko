@@ -59,6 +59,7 @@ namespace octet{ namespace brickophysics{
 			registrations.push_back(registration);
 		}
 
+		//Called every frame
 		void updateForces(float dt)
 		{
 			for (unsigned int i = 0; i < registrations.size(); i++)

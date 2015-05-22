@@ -8,6 +8,9 @@ namespace octet {
 
 			aabb shape;
 
+			///Set a reference to its body, can be usefulfor calculation and to update the transform		
+			brBody* body;
+			
 			/**
 			*  This holds the world transform of the object:
 			*  must be linked to the Rigid body transform

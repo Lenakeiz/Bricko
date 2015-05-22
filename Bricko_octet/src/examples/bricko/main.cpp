@@ -8,8 +8,8 @@
 //
 
 //Define if BRICKO physics must be used or not
-#define BRICKO 1
-
+#define BRICKO 0
+#define DEBUG 0
 //if this is defined does not count the value...
 #define OCTET_BULET 0
 
