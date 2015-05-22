@@ -4,7 +4,7 @@ namespace octet {
 
 	///CHAPTER 13 MILLINGTON
 	#define CHECK_OVERLAP(axis, index) \
-		if (!tryAxis(a, b, (axis), centre, (index), penetration, best))
+		if (!tryAxis(a, b, (axis), centre, (index), penetration, best)) return 0;
 
 		class brCollisionDetector
 		{
@@ -40,11 +40,94 @@ namespace octet {
 				contact->contactNormal = normal;
 				contact->penetration = penetration;
 
-				//TODO check consistency with this transformation
+				//TODO check consistency with this transformation into world coordinates
 				contact->contactPoint = (b.transform * vec4(vertex, 0.0f)).xyz();
 				contact->setData(a.body, b.body, data->friction, data->restitution);
 			}
-				
+		
+			///Calculating point of maximum close
+			static vec3 contactPointOnEdges
+				(
+					const vec3& point_one,
+					const vec3& axis_one,
+					float one_size,
+					const vec3& point_two,
+					const vec3& axis_two,
+					float two_size,
+					bool useA
+				)
+			{
+								
+				float denominator = axis_one.squared() * axis_two.squared() - axis_one.dot(axis_two) * axis_one.dot(axis_two);
+
+				//Check if parallel lines
+				if (fabs(denominator) < 0.0001f)
+				{
+					return useA ? point_one : point_two;
+				}
+
+				float dot_one_dist = axis_one.dot(point_one - point_two);
+				float dot_two_dist = axis_two.dot(point_one - point_two);
+
+				float a = (axis_one.dot(axis_two) * dot_two_dist - axis_two.squared() * dot_one_dist) / denominator;
+				float b = (axis_one.squared() * dot_two_dist - axis_one.dot(axis_two) * dot_one_dist) / denominator;
+
+				if (a > one_size || a < -one_size || b > two_size || b < -two_size)
+				{
+					return useA ? point_one : point_two;
+				}
+				else
+				{
+					vec3 contact_one = point_one + axis_one * a;
+					vec3 contact_two = point_two + axis_two * b;
+
+					return contact_one * 0.5f + contact_two * 0.5;
+				}
+
+			}
+
+			static void generateContactPointEdgeEdgeBoxData(
+				const brCollisionBox &a,
+				const brCollisionBox &b,
+				const vec3 &centre,
+				brCollisionData *data,
+				unsigned best,
+				float penetration
+				)
+			{
+				//Getting the best axis (edge edge case is not with principal axis so we needd to reconstruct the correct cross product)
+				unsigned aAxisIndex = best / 3;
+				unsigned bAxisIndex = best % 3;
+
+				vec3 aAxis = a.get_axis(aAxisIndex);
+				vec3 bAxis = b.get_axis(bAxisIndex);
+				vec3 axis = aAxis.cross(bAxis).normalize();
+
+				//Detecting direction of the axis, make it point from a to b
+				if (axis.dot(centre) > 0) axis = axis * (-1.0f);
+
+				vec3 aPointOnAEdge = a.shape.get_half_extent();
+				vec3 bPointOnBEdge = b.shape.get_half_extent();
+
+				for (unsigned i = 0; i < 3; i++)
+				{
+					if (i == aAxisIndex) aPointOnAEdge[i] = 0;
+					else if (a.get_axis(i).dot(axis) > 0) aPointOnAEdge[i] = -aPointOnAEdge[i];
+
+					if (i == bAxisIndex) bPointOnBEdge[i] = 0;
+					else if (b.get_axis(i).dot(axis) > 0) bPointOnBEdge[i] = -bPointOnBEdge[i];
+				}
+
+				//Transforming into world coordinates
+				aPointOnAEdge = (a.transform * vec4(aPointOnAEdge, 0.0f)).xyz();
+				bPointOnBEdge = (b.transform * vec4(bPointOnBEdge, 0.0f)).xyz();
+
+				//Here there are two middle points and the direction for the edges.
+				//Finding now the point of closest approach between this two lines
+				//TO FINISH
+
+
+			}
 
 			static unsigned generateBoxesData(const brCollisionBox& a, const brCollisionBox& b, brCollisionData* data)
 			{
@@ -82,6 +165,16 @@ namespace octet {
 				{
 					//Vertex of box two is inside face of box one
 					generateContactPointFaceBoxBoxData(a, b, centre, data, best, penetration);
+				}
+				else if (best < 6)
+				{
+					//Millington using the same function from above but swapping the two boxes, need to change direction to the centre vector as well
+					generateContactPointFaceBoxBoxData(b, a, centre *(-1.0f), data, best - 3, penetration);
+				}
+				else
+				{
+					//This is edge to edge collision
+					generateContactPointEdgeEdgeBoxData(a, b, centre, best - 6, penetration);
 				}
 			};
 
