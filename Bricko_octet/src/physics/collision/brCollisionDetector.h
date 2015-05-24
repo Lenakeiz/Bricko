@@ -3,8 +3,8 @@ namespace octet {
 
 
 	///CHAPTER 13 MILLINGTON
-	#define CHECK_OVERLAP(axis, index) \
-		if (!tryAxis(a, b, (axis), centre, (index), penetration, best)) return 0;
+	//#define CHECK_OVERLAP(axis, index) \
+	//	if (!tryAxis(a, b, (axis), centre, (index), penetration, best)) return 0;
 
 		class brCollisionDetector
 		{
@@ -124,7 +124,23 @@ namespace octet {
 
 				//Here there are two middle points and the direction for the edges.
 				//Finding now the point of closest approach between this two lines
-				//TO FINISH
+				vec3 vertex = contactPointOnEdges(
+					aPointOnAEdge, aAxis, a.shape.get_half_extent()[aAxisIndex],
+					bPointOnBEdge, bAxis, b.shape.get_half_extent()[bAxisIndex],
+					best > 2
+					);
+
+				//Adding the contact to the list
+				brContact* contact = data->contacts;
+				
+				contact->penetration = penetration;
+				contact->contactNormal = axis;
+				contact->contactPoint = vertex;
+				contact->setData(a.body, b.body,
+					data->friction, data->restitution);
+
+
+				data->addContacts(1);
 
 
 			}
@@ -138,25 +154,29 @@ namespace octet {
 
 				// There are 6 axes (3 per boxes) 
 				// Their cross product add nine more axis to try
-				CHECK_OVERLAP(a.get_axis(0), 0);
-				CHECK_OVERLAP(a.get_axis(1), 1);
-				CHECK_OVERLAP(a.get_axis(2), 2);
 
-				CHECK_OVERLAP(b.get_axis(0), 3);
-				CHECK_OVERLAP(b.get_axis(1), 4);
-				CHECK_OVERLAP(b.get_axis(2), 5);
+				//First box
+				if (!tryAxis(a, b, (a.get_axis(0)), centre, 0, penetration, best)) return 0;
+				if (!tryAxis(a, b, (a.get_axis(1)), centre, 1, penetration, best)) return 0;
+				if (!tryAxis(a, b, (a.get_axis(2)), centre, 2, penetration, best)) return 0;
 
+				//Second box
+				if (!tryAxis(a, b, (b.get_axis(0)), centre, 3, penetration, best)) return 0;
+				if (!tryAxis(a, b, (b.get_axis(1)), centre, 4, penetration, best)) return 0;
+				if (!tryAxis(a, b, (b.get_axis(2)), centre, 5, penetration, best)) return 0;
+
+				//we store the best at this point because later we can encouter almost parallel edge collisions
 				unsigned bestSingleAxis = best;
 
-				CHECK_OVERLAP(a.get_axis(0).cross(b.get_axis(0)), 6);
-				CHECK_OVERLAP(a.get_axis(0).cross(b.get_axis(1)), 7);
-				CHECK_OVERLAP(a.get_axis(0).cross(b.get_axis(2)), 8);
-				CHECK_OVERLAP(a.get_axis(1).cross(b.get_axis(0)), 9);
-				CHECK_OVERLAP(a.get_axis(1).cross(b.get_axis(1)), 10);
-				CHECK_OVERLAP(a.get_axis(1).cross(b.get_axis(2)), 11);
-				CHECK_OVERLAP(a.get_axis(2).cross(b.get_axis(0)), 12);
-				CHECK_OVERLAP(a.get_axis(2).cross(b.get_axis(1)), 13);
-				CHECK_OVERLAP(a.get_axis(2).cross(b.get_axis(2)), 14);
+				if (!tryAxis(a, b, (a.get_axis(0).cross(b.get_axis(0))), centre, 6, penetration, best)) return 0;
+				if (!tryAxis(a, b, (a.get_axis(0).cross(b.get_axis(1))), centre, 7, penetration, best)) return 0;
+				if (!tryAxis(a, b, (a.get_axis(0).cross(b.get_axis(2))), centre, 8, penetration, best)) return 0;
+				if (!tryAxis(a, b, (a.get_axis(1).cross(b.get_axis(0))), centre, 9, penetration, best)) return 0;
+				if (!tryAxis(a, b, (a.get_axis(1).cross(b.get_axis(1))), centre, 10, penetration, best)) return 0;
+				if (!tryAxis(a, b, (a.get_axis(1).cross(b.get_axis(2))), centre, 11, penetration, best)) return 0;
+				if (!tryAxis(a, b, (a.get_axis(2).cross(b.get_axis(0))), centre, 12, penetration, best)) return 0;
+				if (!tryAxis(a, b, (a.get_axis(2).cross(b.get_axis(1))), centre, 13, penetration, best)) return 0;
+				if (!tryAxis(a, b, (a.get_axis(2).cross(b.get_axis(2))), centre, 14, penetration, best)) return 0;
 
 				assert(best != 0xffffff);
 
@@ -165,17 +185,23 @@ namespace octet {
 				{
 					//Vertex of box two is inside face of box one
 					generateContactPointFaceBoxBoxData(a, b, centre, data, best, penetration);
+					return 1;
 				}
 				else if (best < 6)
 				{
 					//Millington using the same function from above but swapping the two boxes, need to change direction to the centre vector as well
 					generateContactPointFaceBoxBoxData(b, a, centre *(-1.0f), data, best - 3, penetration);
+					return 1;
 				}
 				else
 				{
 					//This is edge to edge collision
-					generateContactPointEdgeEdgeBoxData(a, b, centre, best - 6, penetration);
+					generateContactPointEdgeEdgeBoxData(a, b, centre, data, best - 6, penetration);
+					return 1;
 				}
+
+				return 0;
+
 			};
 
 		};

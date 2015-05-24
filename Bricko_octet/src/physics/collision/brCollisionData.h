@@ -12,12 +12,21 @@ namespace octet {
 
 			///This will hold the maximum number of contacts handled by the engine
 			unsigned int contactsLeft;
-
+			unsigned int contactCount;
 			//TODO friction will be implemented later one, for now just elastic collisions
 			float friction;
 
 			//Ratio  of speed after the collision is exploited
 			float restitution;
+
+			void addContacts(unsigned count)
+			{
+				contactsLeft -= count;
+				contactCount += count;
+
+				//Moving the array
+				contacts += count;
+			}
 
 			brCollisionData()
 			{

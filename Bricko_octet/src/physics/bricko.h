@@ -12,6 +12,7 @@ namespace octet {
 		OCTET_HUNGARIANS(ForceRegistry);
 		OCTET_HUNGARIANS(brContact);
 		OCTET_HUNGARIANS(brCollisionDetector);
+		OCTET_HUNGARIANS(brContactResolver);
 		OCTET_HUNGARIANS(brWorld);
 	}
 	using namespace brickophysics;
@@ -25,6 +26,7 @@ namespace octet {
 #include "collision\brContact.h"
 #include "collision\brCollisionData.h"
 #include "collision\brCollisionDetector.h"
+#include "collision\brContactResolver.h"
 #include "bworld.h"
 
 #endif

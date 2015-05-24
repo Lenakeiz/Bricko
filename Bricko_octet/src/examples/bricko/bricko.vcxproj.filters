@@ -476,6 +476,9 @@
     <ClInclude Include="..\..\physics\collision\brCollisionDetector.h">
       <Filter>physics\collision</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\physics\collision\brContactResolver.h">
+      <Filter>physics\collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\resources\mesh_builder.inl">

@@ -138,6 +138,7 @@
     <ClInclude Include="..\..\physics\collision\brCollisionData.h" />
     <ClInclude Include="..\..\physics\collision\brCollisionDetector.h" />
     <ClInclude Include="..\..\physics\collision\brContact.h" />
+    <ClInclude Include="..\..\physics\collision\brContactResolver.h" />
     <ClInclude Include="..\..\physics\dynamics\brBody.h" />
     <ClInclude Include="..\..\physics\shape\brBox.h" />
     <ClInclude Include="..\..\physics\shape\brCollisionBox.h" />
