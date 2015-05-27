@@ -20,11 +20,12 @@ namespace octet { namespace brickophysics {
 	private:
 		
 		//Broadphase
+		brBroadPhase* broadPhase;
 		//ContactGenerator
-		//ContactList
-		//ContactResolver
+		brCollisionDetector* collisionDetector;
 
-		dynarray<brBody*> bodies;
+		std::vector<brBody*> bodies;
+
 		ForceRegistry forceregistry;
 
 		brForceGenerator* gravityForce;
@@ -40,7 +41,8 @@ namespace octet { namespace brickophysics {
 		void Init(const vec3& gravity)
 		{
 			//this function will init all the classes handled by the bWorld
-
+			broadPhase = new brBroadPhase();
+			collisionDetector = new brCollisionDetector();
 			//setting gravity
 			gravityForce = new Gravity(gravity);
 		}
@@ -49,7 +51,29 @@ namespace octet { namespace brickophysics {
 		void Run(float dt) //this will be the time step, expected is 1.0/60.0
 		{
 			//TestCollisions
+			//This have to become generate pairs of objects collinding
 			TestCollisions();
+
+			//Get out from the broadphase the pairs of pairs of colliding bodies
+
+			//Should add iteration as a parameter
+			const int numIterations = 1;
+			for (int i = 0; i < numIterations; i++)
+			{
+				brCollisionData* collision_data = new brCollisionData();
+				//Foreach pair of coliiding bodies
+					//collisionDetector->generateBoxesData(..etc..);
+
+				if (collision_data != nullptr && collision_data->contactCount != 0)
+				{
+					for (uint32_t i = 0; i < collision_data->contactCount; i++)
+					{
+						//Resolve the contact here
+						//brContactResolver::ResolveContact();
+					}
+				}
+			}
+
 			//Apply forces
 			ApplyForces(dt);
 
@@ -58,9 +82,7 @@ namespace octet { namespace brickophysics {
 				//integrate velocity
 				body->Integrate(dt);
 				body->ClearAccumulators();
-			}
-
-			
+			}			
 
 		}
 

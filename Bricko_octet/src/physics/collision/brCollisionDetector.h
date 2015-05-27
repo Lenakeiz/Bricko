@@ -20,8 +20,7 @@ namespace octet {
 				float penetration
 				)
 			{
-				brContact* contact = data->contacts;
-
+				
 				// Given the axis there are two faces that could result into the collision
 				// This is the simplest case and the axis result into the normal of the two faces to be considered
 				vec3 normal = a.get_axis(best);
@@ -37,12 +36,17 @@ namespace octet {
 				if (b.get_axis(1).dot(normal) < 0) vertex.y() = -vertex.y();
 				if (b.get_axis(2).dot(normal) < 0) vertex.z() = -vertex.z();
 
+				brContact* contact = new brContact();
+
 				contact->contactNormal = normal;
 				contact->penetration = penetration;
 
 				//TODO check consistency with this transformation into world coordinates
 				contact->contactPoint = (b.transform * vec4(vertex, 0.0f)).xyz();
 				contact->setData(a.body, b.body, data->friction, data->restitution);
+				//this is redundant and not used
+				contact->contactsCount += 1;
+				data->addContact();
 			}
 		
 			///Calculating point of maximum close
@@ -137,9 +141,8 @@ namespace octet {
 				contact->contactNormal = axis;
 				contact->contactPoint = vertex;
 				contact->setData(a.body, b.body,
-					data->friction, data->restitution);
-
-
+				data->friction, data->restitution);
+				contact->contactsCount += 1;
 				data->addContacts(1);
 
 

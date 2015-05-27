@@ -4,32 +4,38 @@ namespace octet {
 		struct brCollisionData
 		{
 
-			///This will be a fixed to the first contact so we can loop by incrementing the array
-			brContact* contactStart;
-
 			///Holding a contact array
-			brContact* contacts;
+			std::vector<brContact*> contacts;
 
 			///This will hold the maximum number of contacts handled by the engine
-			unsigned int contactsLeft;
-			unsigned int contactCount;
+			uint32_t contactsLeft;
+
 			//TODO friction will be implemented later one, for now just elastic collisions
 			float friction;
 
 			//Ratio  of speed after the collision is exploited
 			float restitution;
 
-			void addContacts(unsigned count)
+			void SetMaximumContacts(uint32_t _n)
 			{
-				contactsLeft -= count;
-				contactCount += count;
+				contactsLeft = _n;
+			}
 
-				//Moving the array
-				contacts += count;
+			void Init()
+			{
+				contacts.reserve(contactsLeft);
+			}
+
+			bool addContact(unsigned count, brContact* contact)
+			{
+				contacts.push_back(contact);
+				contactsLeft -= 1;
+				return contactsLeft == 0;
 			}
 
 			brCollisionData()
 			{
+				
 			}
 
 			~brCollisionData()
