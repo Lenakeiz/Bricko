@@ -130,7 +130,7 @@ namespace octet {
 
 			}
 
-		protected:
+		public:
 			///members
 			//Properties of a rigid body can be divided in two:
 			//Immutable such mass, inertia, damping
@@ -235,6 +235,8 @@ namespace octet {
 				box->localtransform = boxdef.transform;
 				box->halfextent = boxdef.halfextent;
 				box->collisionVolume = new brCollisionBox(aabb(vec3(0, 0, 0), boxdef.halfextent));
+				box->collisionVolume->body = this;
+				//TODO check if this can be removed
 				box->body = this;
 
 				box->friction = boxdef.friction;

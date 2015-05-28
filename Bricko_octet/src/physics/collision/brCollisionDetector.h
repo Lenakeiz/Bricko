@@ -3,9 +3,6 @@ namespace octet {
 
 
 	///CHAPTER 13 MILLINGTON
-	//#define CHECK_OVERLAP(axis, index) \
-	//	if (!tryAxis(a, b, (axis), centre, (index), penetration, best)) return 0;
-
 		class brCollisionDetector
 		{
 		public:
@@ -46,7 +43,7 @@ namespace octet {
 				contact->setData(a.body, b.body, data->friction, data->restitution);
 				//this is redundant and not used
 				contact->contactsCount += 1;
-				data->addContact();
+				data->addContact(1,contact);
 			}
 		
 			///Calculating point of maximum close
@@ -135,7 +132,7 @@ namespace octet {
 					);
 
 				//Adding the contact to the list
-				brContact* contact = data->contacts;
+				brContact* contact = new brContact();
 				
 				contact->penetration = penetration;
 				contact->contactNormal = axis;
@@ -143,8 +140,7 @@ namespace octet {
 				contact->setData(a.body, b.body,
 				data->friction, data->restitution);
 				contact->contactsCount += 1;
-				data->addContacts(1);
-
+				data->addContact(1,contact);
 
 			}
 

@@ -35,7 +35,8 @@ namespace octet {
 
 			brCollisionData()
 			{
-				
+				//This is a default value
+				contactsLeft = 100;
 			}
 
 			~brCollisionData()

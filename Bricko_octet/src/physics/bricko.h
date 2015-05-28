@@ -4,8 +4,8 @@
 namespace octet {
 	namespace  brickophysics{
 		OCTET_HUNGARIANS(brBox);
-		OCTET_HUNGARIANS(brCollisionBox);
 		OCTET_HUNGARIANS(brBody);
+		OCTET_HUNGARIANS(brCollisionBox);
 		OCTET_HUNGARIANS(brBroadPhase);
 		OCTET_HUNGARIANS(brForceGenerator);
 		OCTET_HUNGARIANS(Gravity);

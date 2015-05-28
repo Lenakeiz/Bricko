@@ -62,7 +62,7 @@ namespace octet {
 
 	  camera = app_scene->get_camera_instance(0);
 	  camera->get_node()->translate(vec3(0, 0, 40));
-	  camera->set_far_plane(10000);
+	  camera->set_far_plane(1000);
 
 	  vec3 halfextent = vec3(2.0f, 2.0f, 2.0f);
 

@@ -6,6 +6,7 @@ namespace octet {
 		public:
 
 			uint32_t contactsCount;
+
 			///holding bodies that are involved in contacts
 			brBody* bodies[2];
 

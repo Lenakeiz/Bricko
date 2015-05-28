@@ -15,11 +15,18 @@ namespace octet {
 			*  This holds the world transform of the object:
 			*  must be linked to the Rigid body transform
 			*/
+
+			//THIS IS DANGEROUS SINCE WE NEED ALWAYS TO SYNC THIS MATRIX WITH THE BODY
+			// I WILL USE ALWAYS THE REFERENCE TO THE BODY AND GET THE TRANSFORM
 			mat4t transform;
 
 			vec3 get_axis(unsigned idx) const
 			{
-				transform[idx].xyz();
+				//assert(body != nullptr);
+				//return (body->transformMatrix)[idx].xyz();
+				//mat4t transformy = body->GetTransformMat4t();
+				//return transformy[idx].xyz();
+				return transform[idx].xyz();
 			}
 
 			vec3 get_x_axis() const

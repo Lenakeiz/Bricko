@@ -43,6 +43,7 @@ namespace octet { namespace brickophysics {
 			//this function will init all the classes handled by the bWorld
 			broadPhase = new brBroadPhase();
 			collisionDetector = new brCollisionDetector();
+
 			//setting gravity
 			gravityForce = new Gravity(gravity);
 		}
@@ -52,24 +53,27 @@ namespace octet { namespace brickophysics {
 		{
 			//TestCollisions
 			//This have to become generate pairs of objects collinding
-			TestCollisions();
+			//TestCollisions();
+			broadPhase->generatePairs(bodies);
 
 			//Get out from the broadphase the pairs of pairs of colliding bodies
-
+			const std::vector<BodyPair>& bodyPairs = broadPhase->GetPairs();
 			//Should add iteration as a parameter
 			const int numIterations = 1;
 			for (int i = 0; i < numIterations; i++)
 			{
 				brCollisionData* collision_data = new brCollisionData();
-				//Foreach pair of coliiding bodies
-					//collisionDetector->generateBoxesData(..etc..);
 
-				if (collision_data != nullptr && collision_data->contactCount != 0)
+				for (uint32_t i = 0; i < bodyPairs.size(); i++)
 				{
-					for (uint32_t i = 0; i < collision_data->contactCount; i++)
+					collisionDetector->generateBoxesData(*(bodyPairs[i].bodies[0]->boxref->collisionVolume), *(bodyPairs[i].bodies[1]->boxref->collisionVolume), collision_data);
+				}
+
+				if (collision_data != nullptr && collision_data->contacts.size() != 0)
+				{
+					for (uint32_t j = 0; j < collision_data->contacts.size(); j++)
 					{
-						//Resolve the contact here
-						//brContactResolver::ResolveContact();
+						brContactResolver::ResolveContact(*(collision_data->contacts[j]), numIterations);
 					}
 				}
 			}
@@ -82,8 +86,19 @@ namespace octet { namespace brickophysics {
 				//integrate velocity
 				body->Integrate(dt);
 				body->ClearAccumulators();
-			}			
+			}		
 
+			SyncTransforms();
+
+		}
+
+		void SyncTransforms()
+		{
+			for (uint32_t i = 0; i < bodies.size(); i++)
+			{
+				mat4t t = bodies[i]->GetTransformMat4t();
+				bodies[i]->boxref->collisionVolume->transform = t;
+			}
 		}
 
 		void UpdateRenderingPos()
@@ -118,7 +133,7 @@ namespace octet { namespace brickophysics {
 					mat4t b = bodies[j]->GetTransformMat4t();
 
 					brCollisionBox* boxa = bodies[i]->boxref->collisionVolume;
-					brCollisionBox* boxb = bodies[i]->boxref->collisionVolume;
+					brCollisionBox* boxb = bodies[j]->boxref->collisionVolume;
 
 					if (boxa->shape.intersects_old(boxb->shape, a, b))
 					{

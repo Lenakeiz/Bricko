@@ -54,7 +54,6 @@ namespace octet {
 
 		mat4t localtransform_mat4t;
 		brTransform localtransform;
-
 		vec3 halfextent;
 
 		///Holding reference to its colliding volume

@@ -10,7 +10,7 @@ namespace octet {
 				
 			}
 
-			static void ResolveContact(brContact contact, int iterations)
+			static void ResolveContact(brContact& contact, int iterations)
 			{
 				//Need to add awake status check
 				//ResolveVelocities(contact, iterations);
