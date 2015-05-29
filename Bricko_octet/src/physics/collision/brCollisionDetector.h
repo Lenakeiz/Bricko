@@ -37,7 +37,7 @@ namespace octet {
 
 				contact->contactNormal = normal;
 				contact->penetration = penetration;
-
+				contact->friction = data->friction;
 				//TODO check consistency with this transformation into world coordinates
 				contact->contactPoint = (b.transform * vec4(vertex, 0.0f)).xyz();
 				contact->setData(a.body, b.body, data->friction, data->restitution);
@@ -137,6 +137,7 @@ namespace octet {
 				contact->penetration = penetration;
 				contact->contactNormal = axis;
 				contact->contactPoint = vertex;
+				contact->friction = data->friction;
 				contact->setData(a.body, b.body,
 				data->friction, data->restitution);
 				contact->contactsCount += 1;

@@ -162,7 +162,7 @@ namespace octet {
 			vec3 angularVelocity;
 
 			///Holding transform matrix
-			mat4t transformMatrix;
+			//mat4t transformMatrix;
 			brTransform transform;
 
 			///Holding accumulated force applied to the body to be applied next integration
@@ -317,7 +317,7 @@ namespace octet {
 					mat3 rot = transform.rotation;
 					inverseInertiaWorldTensor = rot * inverseInertiaBodyTensor * transpose(rot);
 
-					linearVelocity += (force * inverseMass) * dt;
+					linearVelocity  += (force * inverseMass) * dt;
 					angularVelocity += (inverseInertiaWorldTensor * torque) * dt;
 					
 					//damping the force instead the velocity
@@ -335,9 +335,7 @@ namespace octet {
 					transform.rotation = orientation.ToMat3();
 					transform.position = worldpos - multiply(transform.rotation, localpos);
 					
-				}
-				else{ return; }
-				
+				}				
 			}
 
 			~brBody()

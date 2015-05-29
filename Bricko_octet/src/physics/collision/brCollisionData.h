@@ -16,6 +16,11 @@ namespace octet {
 			//Ratio  of speed after the collision is exploited
 			float restitution;
 
+			void SetFriction(float t)
+			{
+				friction = t;
+			}
+
 			void SetMaximumContacts(uint32_t _n)
 			{
 				contactsLeft = _n;

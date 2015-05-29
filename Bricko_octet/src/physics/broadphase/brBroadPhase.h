@@ -47,6 +47,9 @@ namespace octet {
 
 						if (boxa->shape.intersects_old(boxb->shape, a, b))
 						{
+							#ifdef DEBUG
+							printf("Colliding shape : %d %d \n", a, b);
+							#endif
 							pairs.push_back(BodyPair(bodiesList[i], bodiesList[j]));
 						}
 					}

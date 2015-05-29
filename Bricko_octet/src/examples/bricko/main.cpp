@@ -11,7 +11,7 @@
 #define BRICKO 0
 #define DEBUG 0
 //if this is defined does not count the value...
-#define OCTET_BULET 0
+//#define OCTET_BULET 0
 
 #include "../../octet.h"
 

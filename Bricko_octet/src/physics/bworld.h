@@ -36,6 +36,8 @@ namespace octet { namespace brickophysics {
 			forceregistry.updateForces(dt);
 		}
 
+	public:
+		float friction = 0.0f;
 	public:		
 
 		void Init(const vec3& gravity)
@@ -62,7 +64,9 @@ namespace octet { namespace brickophysics {
 			const int numIterations = 1;
 			for (int i = 0; i < numIterations; i++)
 			{
+
 				brCollisionData* collision_data = new brCollisionData();
+				collision_data->SetFriction(friction);
 
 				for (uint32_t i = 0; i < bodyPairs.size(); i++)
 				{
