@@ -143,6 +143,11 @@ namespace octet { namespace math {
 
     // cross product
     vec3 cross(const vec3 &r) const {
+		return vec3(
+			v[1] * r.v[2] - v[2] * r.v[1],
+			v[2] * r.v[0] - v[0] * r.v[2],
+			v[0] * r.v[1] - v[1] * r.v[0]
+			);
       #if OCTET_SSE
         __m128 lshuf = _mm_shuffle_ps(r.m, r.m, _MM_SHUFFLE(0, 0, 2, 1));
         __m128 rshuf = _mm_shuffle_ps(m, m, _MM_SHUFFLE(0, 0, 2, 1));
@@ -205,6 +210,7 @@ namespace octet { namespace math {
     }
 
     vec3 operator*(const vec3 &r) const {
+		return vec3(v[0] * r.v[0], v[1] * r.v[1], v[2] * r.v[2]);
       #if OCTET_SSE
         return vec3(_mm_mul_ps(m, r.m));
       #else

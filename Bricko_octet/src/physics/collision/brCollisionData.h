@@ -21,6 +21,11 @@ namespace octet {
 				friction = t;
 			}
 
+			void SetRestitution(float r)
+			{
+				restitution = r;
+			}
+
 			void SetMaximumContacts(uint32_t _n)
 			{
 				contactsLeft = _n;

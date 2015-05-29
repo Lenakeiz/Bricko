@@ -38,6 +38,7 @@ namespace octet { namespace brickophysics {
 
 	public:
 		float friction = 0.0f;
+		float restitution = 0.8f;
 	public:		
 
 		void Init(const vec3& gravity)
@@ -62,15 +63,15 @@ namespace octet { namespace brickophysics {
 			const std::vector<BodyPair>& bodyPairs = broadPhase->GetPairs();
 			//Should add iteration as a parameter
 			const int numIterations = 1;
-			for (int i = 0; i < numIterations; i++)
+			for (int iter = 0; iter < numIterations; iter++)
 			{
 
 				brCollisionData* collision_data = new brCollisionData();
 				collision_data->SetFriction(friction);
-
-				for (uint32_t i = 0; i < bodyPairs.size(); i++)
+				collision_data->SetRestitution(restitution);
+				for (uint32_t i_p = 0; i_p < bodyPairs.size(); i_p++)
 				{
-					collisionDetector->generateBoxesData(*(bodyPairs[i].bodies[0]->boxref->collisionVolume), *(bodyPairs[i].bodies[1]->boxref->collisionVolume), collision_data);
+					collisionDetector->generateBoxesData(*(bodyPairs[i_p].bodies[0]->boxref->collisionVolume), *(bodyPairs[i_p].bodies[1]->boxref->collisionVolume), collision_data);
 				}
 
 				if (collision_data != nullptr && collision_data->contacts.size() != 0)

@@ -3,16 +3,21 @@ namespace octet {
 
 		class brContactResolver
 		{
+			
+
 		public:
 			
 			///I will avoid considering static and dynamic friction, I will use just a friction set to the world and passed to all contacts
 			static void ResolveVelocities(brContact& contact)
 			{
+
 				brBody* a = contact.bodies[0];
 				brBody* b = contact.bodies[1];
 
 				if (!a->HasFiniteMass() && !a->HasFiniteMass())
 					return;
+
+				const float epsilon = 0.00000001f;
 
 				vec3 relativeContactPosition[2], velocityAtContactPosition[2], velocityPerUnitImpulse[2], tangentVelocityPerUnitImpulse[2];
 				float finalModuleVelocity = 0.0f;
@@ -55,7 +60,7 @@ namespace octet {
 						vec3 tPerUnitImpulse = relativeContactPosition[1].cross(contact.contactNormal);
 						//rotation per unit impulse
 						tPerUnitImpulse = b->inverseInertiaWorldTensor * tPerUnitImpulse;
-						velocityPerUnitImpulse[1] = tPerUnitImpulse.cross(relativeContactPosition[0]);
+						velocityPerUnitImpulse[1] = tPerUnitImpulse.cross(relativeContactPosition[1]);
 					}
 
 					float norm_angular = (velocityPerUnitImpulse[0] + velocityPerUnitImpulse[1]).dot(contact.contactNormal);
@@ -117,7 +122,9 @@ namespace octet {
 			static void ResolvePositions(brContact& contact)
 			{
 				brBody* b[2];				
-				const float threshold = 0.01f;
+				const float threshold = 0.0001f;
+
+				const float epsilon = 0.00000001f;
 
 				float s[2] = { 1.0f, -1.0f };
 
@@ -138,7 +145,7 @@ namespace octet {
 						
 						float linearInertia = b[i]->inverseMass;
 						float totalInertia = linearInertia + angularInertia;
-						float inverseInertia = totalInertia == 0.0f ? 0.0f : 1.0f / totalInertia;
+						float inverseInertia = totalInertia < epsilon ? 0.0f : 1.0f / totalInertia;
 						
 						float linearMove = s[i] * contact.penetration * linearInertia * inverseInertia;
 						float angularMove = s[i] * contact.penetration * linearInertia * inverseInertia;
@@ -159,11 +166,11 @@ namespace octet {
 
 						linearMove = totalMove - angularMove;
 
-						vec3 angularChange;
-						if (! (angularMove == 0.0f) )
+						vec3 angularChange(0.0f);
+						if (abs(angularMove) > epsilon)
 						{
 							vec3 impulseTorque = relativeContactPos.cross(contact.contactNormal);
-							angularChange = angularInertia == 0.0f ? vec3(0.0f) : (b[i]->inverseInertiaWorldTensor * impulseTorque) * (angularMove / angularInertia);
+							angularChange = angularInertia < epsilon ? vec3(0.0f) : (b[i]->inverseInertiaWorldTensor * impulseTorque) * (angularMove / angularInertia);
 						}
 
 						b[i]->transform.position += contact.contactNormal * linearMove;
@@ -174,6 +181,9 @@ namespace octet {
 						q.update(angularChange, 1.0f);
 						normalize(q);
 						b[i]->orientation = q;
+
+						b[i]->transform.rotation = q.ToMat3();
+						//b[i]->transform.position = b[i]->worldpos - multiply(b[i]->transform.rotation, b[i]->localpos);
 
 					}
 				}

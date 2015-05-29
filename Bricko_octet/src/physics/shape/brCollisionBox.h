@@ -103,6 +103,13 @@ namespace octet {
 
 		static inline bool tryAxis(const brCollisionBox& a, const brCollisionBox& b, const vec3& axis, const vec3& centre, unsigned index, float& smallestPenetration, unsigned &smallestCase)
 		{
+			//Checking against NaN
+			if (!(axis.x() <= DBL_MAX && axis.x() >= -DBL_MAX) || !(axis.y() <= DBL_MAX && axis.y() >= -DBL_MAX) || !(axis.z() <= DBL_MAX && axis.z() >= -DBL_MAX))
+				return true;
+			
+			if (axis.squared() < 0.0001f)
+				return true;
+			
 			float penetration = penetrationOnAxis(a, b, axis, centre);
 			if (penetration < 0) return false;
 			if (penetration < smallestPenetration)

@@ -32,10 +32,10 @@ namespace octet {
 			  exit(0);
 		  }
 		  if (is_key_down('W')){
-			  camera->get_node()->translate(vec3(0, -5, 0));
+			  camera->get_node()->translate(vec3(0, 5, 0));
 		  }
 		  else if (is_key_down('S')){
-			  camera->get_node()->translate(vec3(0, 5, 0));
+			  camera->get_node()->translate(vec3(0, -5, 0));
 		  }
 		  else if (is_key_down('A')){
 			  camera->get_node()->translate(vec3(-5, 0, 0));
@@ -71,7 +71,7 @@ namespace octet {
 	  material *blue = new material(vec4(0, 0, 1, 1));
 	  mesh_box *box = new mesh_box(halfextent);
       
-	  vec3 iniPos = vec3(-20.0f, 4.0f, 0.0f);
+	  vec3 iniPos = vec3(0.0f, 10.0f, 0.0f);
 	  vec3 iniPos2 = vec3(20.0f, 4.0f, 0.0f);
 	  mat4t mat;
 
@@ -83,8 +83,8 @@ namespace octet {
 	  bodydef.initialAxis = vec3(0, 1, 0).normalize();
 	  bodydef.initialAngle = 0.0f;//45 * (3.14159265f / 180); //bricko uses radiant
 	  bodydef.bodyType = Dynamic;
-	  bodydef.intialAngularVelocity = vec3(0.0f, 2.0f, 2.0f);//vec3(2.0f, 2.0f, 2.0f);
-	  bodydef.intialLinearVelocity = vec3(20.0f, 30.0f, 0.0f);//vec3(0.0f, 0.0f, 3.0f);
+	  bodydef.intialAngularVelocity = vec3(0.0f);//, 2.0f, 2.0f);//vec3(2.0f, 2.0f, 2.0f);
+	  bodydef.intialLinearVelocity = vec3(0.0f, 0.0f, 0.0f);//vec3(0.0f, 0.0f, 3.0f);
 	  //identity(bodydef.intialLinearVelocity);
 
 	  brTransform t;
@@ -102,20 +102,21 @@ namespace octet {
 	  mat.loadIdentity();
 	  mat.translate(iniPos2);
 	  //box2
-	  app_scene->add_bricko_shape(mat, box, green, bodydef, boxdef);
+	  //app_scene->add_bricko_shape(mat, box, green, bodydef, boxdef);
 
 	  //adding a static object
 	  brBodyDef groundDef;
-	  vec3 translation(0.0f, -15.0f, 0.0f);
+	  vec3 translation(0.0f, -10.0f, 0.0f);
 	  groundDef.bodyType = Static;
 	  groundDef.initialAxis = vec3(0, 1, 0).normalize();
-	  groundDef.initialPosition = translation;
+	  groundDef.initialPosition = iniPos + translation;
 	  identity(t);
 	  brBoxDef groundboxdef;
 	  //vec3 is halfextent
-	  groundboxdef.Set(t, vec3(50.0f, 1.0f, 50.0f));
-	  mat.loadIdentity();	  
-	  mesh_box *ground_box = new mesh_box(vec3(50.0f, 1.0f, 50.0f));
+	  groundboxdef.Set(t, halfextent);
+	  mat.loadIdentity();
+	  mat.translate(iniPos + translation);
+	  mesh_box *ground_box = new mesh_box(halfextent);
 	  //ground
 	  app_scene->add_bricko_shape(mat, ground_box, blue, groundDef, groundboxdef);
 
@@ -131,7 +132,7 @@ namespace octet {
       get_viewport_size(vx, vy);
       app_scene->begin_render(vx, vy, vec4(0.0f,0.0f,0.0f, 1.0f));
 	  
-	  app_scene->update_physics(1.0f / 60);
+	  app_scene->update_physics(1.0f / 360);
 	  app_scene->update(1.0f / 30);  
 	  
 	  // draw the scene

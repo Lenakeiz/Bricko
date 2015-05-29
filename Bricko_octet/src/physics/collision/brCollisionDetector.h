@@ -196,7 +196,8 @@ namespace octet {
 				else
 				{
 					//This is edge to edge collision
-					generateContactPointEdgeEdgeBoxData(a, b, centre, data, best - 6, penetration);
+					best -= 6;
+					generateContactPointEdgeEdgeBoxData(a, b, centre, data, best, penetration);
 					return 1;
 				}
 

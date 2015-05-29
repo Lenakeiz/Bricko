@@ -37,13 +37,13 @@ namespace octet {
 		void Set(const mat4t& t, const vec3& he)
 		{
 			transform_mat4t = t;
-			halfextent = he * 0.5f;
+			halfextent = he;// *0.5f;
 		}
 
 		void Set(const brTransform& t, const vec3& he)
 		{
 			transform = t;
-			halfextent = he * 0.5f;
+			halfextent = he;// *0.5f;
 		}
 
 	};
