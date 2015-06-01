@@ -38,7 +38,7 @@ namespace octet { namespace brickophysics {
 
 	public:
 		float friction = 0.0f;
-		float restitution = 0.8f;
+		float restitution = 0.2f;
 	public:		
 
 		void Init(const vec3& gravity)
@@ -101,8 +101,11 @@ namespace octet { namespace brickophysics {
 		{
 			for (uint32_t i = 0; i < bodies.size(); i++)
 			{
-				mat4t t = bodies[i]->GetTransformMat4t();
-				bodies[i]->boxref->collisionVolume->transform = t;
+				if (bodies[i]->HasFiniteMass())
+				{
+					mat4t t = bodies[i]->GetTransformMat4t();
+					bodies[i]->boxref->collisionVolume->transform = t;
+				}				
 			}
 		}
 

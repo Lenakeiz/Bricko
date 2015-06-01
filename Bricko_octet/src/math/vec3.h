@@ -194,6 +194,7 @@ namespace octet { namespace math {
     //
 
     vec3 operator+(const vec3 &r) const {
+		return vec3(v[0] + r.v[0], v[1] + r.v[1], v[2] + r.v[2]);
       #if OCTET_SSE
         return vec3(_mm_add_ps(m, r.m));
       #else

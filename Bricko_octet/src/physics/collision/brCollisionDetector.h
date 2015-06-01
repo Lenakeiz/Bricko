@@ -39,7 +39,7 @@ namespace octet {
 				contact->penetration = penetration;
 				contact->friction = data->friction;
 				//TODO check consistency with this transformation into world coordinates
-				contact->contactPoint = (b.transform * vec4(vertex, 0.0f)).xyz();
+				contact->contactPoint = (b.body->transform.rotation * vertex);
 				contact->setData(a.body, b.body, data->friction, data->restitution);
 				//this is redundant and not used
 				contact->contactsCount += 1;
@@ -147,7 +147,9 @@ namespace octet {
 
 			static unsigned generateBoxesData(const brCollisionBox& a, const brCollisionBox& b, brCollisionData* data)
 			{
-				vec3 centre = b.get_axis(3) - a.get_axis(3);
+				
+				//vec3 centre = b.get_axis(3) - a.get_axis(3);
+				vec3 centre = b.body->GetPosition() - a.body->GetPosition();
 
 				float penetration = 150000;
 				unsigned best = 0xffffff;

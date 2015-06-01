@@ -4,6 +4,9 @@
 //
 // Modular Framework for OpenGLES2 rendering on multiple platforms.
 //
+#include <ctime>
+#include <chrono>
+
 namespace octet {
   /// Scene containing a box with octet.
   class bricko_example : public app {
@@ -11,6 +14,14 @@ namespace octet {
     ref<visual_scene> app_scene;
 	mouse_look ml;
 	ref<camera_instance> camera;
+
+	double fps = 100.0f;
+	double fixed_delta_time;
+	double accumulator = 0.0f;
+	double accumulator_max = 0.2f;
+
+	std::clock_t startTime;
+
   public:
     /// this is called when we construct the class before everything is initialised.
 	  bricko_example(int argc, char **argv) : app(argc, argv) {
@@ -64,7 +75,7 @@ namespace octet {
 	  camera->get_node()->translate(vec3(0, 0, 40));
 	  camera->set_far_plane(1000);
 
-	  vec3 halfextent = vec3(2.0f, 2.0f, 2.0f);
+	  vec3 halfextent = vec3(2.0f);
 
       material *red = new material(vec4(1, 0, 0, 1));
 	  material *green = new material(vec4(0, 1, 0, 1));
@@ -73,53 +84,52 @@ namespace octet {
       
 	  vec3 iniPos = vec3(0.0f, 10.0f, 0.0f);
 	  vec3 iniPos2 = vec3(20.0f, 4.0f, 0.0f);
-	  mat4t mat;
-
-	  mat.translate(iniPos);
-	  vec3 mp = mat.get_principal_axis();
 
 	  brBodyDef bodydef;
 	  bodydef.initialPosition = iniPos; //modelPos.get_translation();
 	  bodydef.initialAxis = vec3(0, 1, 0).normalize();
 	  bodydef.initialAngle = 0.0f;//45 * (3.14159265f / 180); //bricko uses radiant
 	  bodydef.bodyType = Dynamic;
-	  bodydef.intialAngularVelocity = vec3(0.0f);//, 2.0f, 2.0f);//vec3(2.0f, 2.0f, 2.0f);
+	  bodydef.intialAngularVelocity = vec3(0.7f);//, 2.0f, 2.0f);//vec3(2.0f, 2.0f, 2.0f);
 	  bodydef.intialLinearVelocity = vec3(0.0f, 0.0f, 0.0f);//vec3(0.0f, 0.0f, 3.0f);
 	  //identity(bodydef.intialLinearVelocity);
 
 	  brTransform t;
 	  identity(t);
 	  brBoxDef boxdef;
-	  
 	  //vec3 is halfextent
 	  boxdef.Set(t, halfextent);
+	  boxdef.density = 1.2f;
 
-	  //box1
-	  app_scene->add_bricko_shape(mat, box, red, bodydef, boxdef);
-
-	  bodydef.initialPosition = iniPos2;
-	  bodydef.intialLinearVelocity = vec3(-20.0f, 30.0f, 0.0f);
-	  mat.loadIdentity();
-	  mat.translate(iniPos2);
-	  //box2
-	  //app_scene->add_bricko_shape(mat, box, green, bodydef, boxdef);
+	  mat4t mat;
+	  mat.translate(iniPos);
 
 	  //adding a static object
 	  brBodyDef groundDef;
-	  vec3 translation(0.0f, -10.0f, 0.0f);
+	  vec3 groundPos(0.0f, -10.0f, 0.0f);
+	  vec3 groundHalfExtent(vec3(2.0f));
 	  groundDef.bodyType = Static;
 	  groundDef.initialAxis = vec3(0, 1, 0).normalize();
-	  groundDef.initialPosition = iniPos + translation;
-	  identity(t);
-	  brBoxDef groundboxdef;
-	  //vec3 is halfextent
-	  groundboxdef.Set(t, halfextent);
-	  mat.loadIdentity();
-	  mat.translate(iniPos + translation);
-	  mesh_box *ground_box = new mesh_box(halfextent);
-	  //ground
-	  app_scene->add_bricko_shape(mat, ground_box, blue, groundDef, groundboxdef);
+	  groundDef.initialPosition = groundPos;
 
+	  brTransform t_ground;
+	  identity(t_ground);
+
+	  brBoxDef groundboxdef;	  
+	  groundboxdef.Set(t_ground, groundHalfExtent);
+
+	  mat4t mat_ground;
+	  mat_ground.loadIdentity();
+	  mat_ground.translate(groundPos);
+
+	  mesh_box *ground_box = new mesh_box();
+	  
+	  app_scene->add_bricko_shape(mat_ground, ground_box, blue, groundDef, groundboxdef);
+	  //app_scene->add_bricko_shape(mat, box, red, bodydef, boxdef);
+	  
+
+	  fixed_delta_time = 1.0f / fps;
+	  startTime = std::clock();
     }
 
     /// this is called to draw the world
@@ -132,7 +142,21 @@ namespace octet {
       get_viewport_size(vx, vy);
       app_scene->begin_render(vx, vy, vec4(0.0f,0.0f,0.0f, 1.0f));
 	  
-	  app_scene->update_physics(1.0f / 360);
+	  std::clock_t curr_time = std::clock();
+
+	  accumulator += (double)(curr_time - startTime) / CLOCKS_PER_SEC;
+	  startTime = curr_time;
+
+	  if (accumulator > accumulator_max)
+		  accumulator = accumulator_max;
+
+	  while (accumulator>fixed_delta_time)
+	  {
+		  app_scene->update_physics((float)fixed_delta_time);
+		  accumulator -= fixed_delta_time;
+	  }
+
+	  
 	  app_scene->update(1.0f / 30);  
 	  
 	  // draw the scene

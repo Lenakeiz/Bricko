@@ -14,12 +14,16 @@ namespace octet {
 				brBody* a = contact.bodies[0];
 				brBody* b = contact.bodies[1];
 
-				if (!a->HasFiniteMass() && !a->HasFiniteMass())
+				if (!a->HasFiniteMass() && !b->HasFiniteMass())
 					return;
 
 				const float epsilon = 0.00000001f;
 
-				vec3 relativeContactPosition[2], velocityAtContactPosition[2], velocityPerUnitImpulse[2], tangentVelocityPerUnitImpulse[2];
+				vec3 relativeContactPosition[2]       = { vec3(0.0f), vec3(0.0f) };
+				vec3 velocityAtContactPosition[2]     = { vec3(0.0f), vec3(0.0f) }; 
+				vec3 velocityPerUnitImpulse[2]        = { vec3(0.0f), vec3(0.0f) };
+				vec3 tangentVelocityPerUnitImpulse[2] = { vec3(0.0f), vec3(0.0f) };
+
 				float finalModuleVelocity = 0.0f;
 				float finalTangentVelocity = 0.0f;
 
@@ -37,7 +41,7 @@ namespace octet {
 				if (seperatingComponent > 0.0f)
 					return;
 
-				float linearComp = (a->inverseMass + b->inverseMass);
+				float linearComp = contact.contactNormal.squared() * (a->inverseMass + b->inverseMass);
 
 				//Evaluating normal components
 				{
@@ -65,25 +69,25 @@ namespace octet {
 
 					float norm_angular = (velocityPerUnitImpulse[0] + velocityPerUnitImpulse[1]).dot(contact.contactNormal);
 
-					float totat_normal = linearComp + norm_angular;
+					float totat_normal = linearComp + norm_angular + 0.000001f;
 
 					finalModuleVelocity = -1.0f * (1.0f + c) * velocityDifference.dot(contact.contactNormal) / totat_normal;
 				
 					//Applying changes to bodies
 					if (a->HasFiniteMass())
 					{
-						a->linearVelocity += contact.contactNormal * (totat_normal * a->inverseMass);
+						a->linearVelocity += (-1.0f * contact.contactNormal) * (totat_normal * a->inverseMass);
 
 						vec3 angular_change = a->inverseInertiaWorldTensor * (relativeContactPosition[0] * finalModuleVelocity);
-						a->angularVelocity += angular_change;
+						//a->angularVelocity += angular_change;
 					}
 
 					if (b->HasFiniteMass())
 					{
-						b->linearVelocity += contact.contactNormal * (totat_normal * b->inverseMass);
+						b->linearVelocity += (-1.0f * contact.contactNormal) * (totat_normal * b->inverseMass);
 
 						vec3 angular_change = b->inverseInertiaWorldTensor * (relativeContactPosition[1] * finalModuleVelocity);
-						b->angularVelocity += angular_change;
+						//b->angularVelocity += angular_change;
 					}
 				}
 				
@@ -122,7 +126,7 @@ namespace octet {
 			static void ResolvePositions(brContact& contact)
 			{
 				brBody* b[2];				
-				const float threshold = 0.0001f;
+				const float threshold = 0.0004f;
 
 				const float epsilon = 0.00000001f;
 
@@ -148,9 +152,9 @@ namespace octet {
 						float inverseInertia = totalInertia < epsilon ? 0.0f : 1.0f / totalInertia;
 						
 						float linearMove = s[i] * contact.penetration * linearInertia * inverseInertia;
-						float angularMove = s[i] * contact.penetration * linearInertia * inverseInertia;
+						float angularMove = s[i] * contact.penetration * angularInertia * inverseInertia;
 
-						vec3 proj = relativeContactPos + (contact.contactNormal * (-1.0f * relativeContactPos.dot(contact.contactNormal)));
+						vec3 proj = relativeContactPos + (contact.contactNormal * ((-1.0f * relativeContactPos).dot(contact.contactNormal)));
 						
 						float maxMovement = proj.length() * threshold;
 						float totalMove = angularMove + linearMove;
@@ -173,16 +177,14 @@ namespace octet {
 							angularChange = angularInertia < epsilon ? vec3(0.0f) : (b[i]->inverseInertiaWorldTensor * impulseTorque) * (angularMove / angularInertia);
 						}
 
-						b[i]->transform.position += contact.contactNormal * linearMove;
+						b[i]->transform.position += contact.contactNormal * linearMove;						
+						
 						quat q = b[i]->orientation;
-
-						//TODO check if it needs to change also the brTransform connected to the body (it will depend on where one will do the collision calculation)
-						// see integrate method in brBody for reerence
 						q.update(angularChange, 1.0f);
-						normalize(q);
-						b[i]->orientation = q;
-
-						b[i]->transform.rotation = q.ToMat3();
+						q = normalize(q);
+						//b[i]->orientation = q;
+						//b[i]->transform.rotation = q.ToMat3();
+						//b[i]->inverseInertiaWorldTensor = b[i]->transform.rotation *  b[i]->inverseInertiaBodyTensor * transpose(b[i]->transform.rotation);
 						//b[i]->transform.position = b[i]->worldpos - multiply(b[i]->transform.rotation, b[i]->localpos);
 
 					}
@@ -195,8 +197,8 @@ namespace octet {
 			static void ResolveContact(brContact& contact, int iterations)
 			{
 				//Need to add awake status check
-				ResolveVelocities(contact);
 				ResolvePositions(contact);
+				ResolveVelocities(contact);				
 			}
 
 			brContactResolver()

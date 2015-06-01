@@ -234,6 +234,7 @@ namespace octet {
 				brBox* box = new brBox();
 				box->localtransform = boxdef.transform;
 				box->halfextent = boxdef.halfextent;
+
 				box->collisionVolume = new brCollisionBox(aabb(vec3(0, 0, 0), boxdef.halfextent));
 				box->collisionVolume->body = this;
 				//TODO check if this can be removed
@@ -311,7 +312,7 @@ namespace octet {
 
 			void Integrate(float dt)
 			{
-				if (type_flags & brBody::bDynamic)
+				if (HasFiniteMass())
 				{
 					//Calculate inverse of inertia tensor in world coordinate
 					mat3 rot = transform.rotation;
@@ -323,7 +324,7 @@ namespace octet {
 					//damping the force instead the velocity
 
 					// Imposing drag for energy balance
-					linearVelocity  *= 1.0f / (1.0f + dt * 0.1f);
+					linearVelocity *= 1.0f / (1.0f + dt * 0.1f);
 					angularVelocity *= 1.0f / (1.0f + dt * 0.1f);
 
 					//Update positions and rotations
